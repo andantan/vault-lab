@@ -1,0 +1,128 @@
+{
+    "warning": "LOCAL DEVELOPMENT ONLY. These are fake deterministic accounts funded only by deploy/geth/genesis.json. Never use these keys on Sepolia, mainnet, or any public network.",
+    "network": "local",
+    "chainId": 20001209,
+    "rpcUrl": "http://127.0.0.1:8545",
+    "accounts": [
+        {
+            "index": 0,
+            "role": "master",
+            "name": "master",
+            "address": "0xEbD69375d51a8472DF22A3C18405b5A2586c2Aa2",
+            "publicKey": "047bd06f487bda9c2db5d3ec9df2bd9e7771957651388bef7707429be10fee345cab209558bed93f64816d9f93860963fe6620e871c9c99735b1b45a4bf2941a32",
+            "privateKey": "0xea66255f7b410dd47cbe9c9c9bf049bfe441877c1eaf09c5faef8ab7cf45357d"
+        },
+        {
+            "index": 1,
+            "role": "slave",
+            "name": "slave1",
+            "address": "0x8336c196ABb9E7092C879C28D352b39d3f2f3D7A",
+            "publicKey": "04b2af3e3fd328d62b9fecc4353fb9df2634257c304058bc0545553153561178a7bb224b2471e693dac683be909e60096d81efc34c8e65553c7c22f745e9300e80",
+            "privateKey": "0xbb6341656565ea82d1aee66a691d835948581ce30a16240cb0deb1f3160c66f6"
+        },
+        {
+            "index": 2,
+            "role": "slave",
+            "name": "slave2",
+            "address": "0x2c822aC4D8856b417b3e14d75bd7e5E79bE4BBd2",
+            "publicKey": "045258ce85e6f26a0a4796effd80e7433d8a8027430e838ab74602646f13ad80c02a36f29094674fe9a9e92b94d3ad8a5239b64451f22ae2a5921afe51d0efd66a",
+            "privateKey": "0xd0bcd7b38cebc341c9e4dd43c9bf9433831373301880467ad4b19baa832ac837"
+        },
+        {
+            "index": 3,
+            "role": "slave",
+            "name": "slave3",
+            "address": "0xf303C516242552fEA8F68de0B8e6BCBFb3cA44D8",
+            "publicKey": "0462f01739987261f38ea06ac7e7e63daf30ec3072400b1555a9cb43b0456516aa6a8c54a707a47d4215ca20fab9ff9ae0b11a11b7edaa81171739aa78b714e1f3",
+            "privateKey": "0x05366978e9532dce234fc0c1d34e886fa6f8287ac891e16fbfed51ab858b90df"
+        },
+        {
+            "index": 4,
+            "role": "slave",
+            "name": "slave4",
+            "address": "0x6cEadF786A52b109708eb296a5E6Cc9F9b6d751d",
+            "publicKey": "04146205e8004471a930580668966d7663c3d194f3a0ea60f2939420bd945a962e874ad7457f13255989ee392dccd6873801ecf5c558e02583442831b5f5ab9ac6",
+            "privateKey": "0x628fd22f2c3ba2d1d5078633e315f3645aba1264f413bbc4d96b71433e045b25"
+        },
+        {
+            "index": 5,
+            "role": "spare",
+            "name": "spare1",
+            "address": "0x8E8db60047D1ca73194a8fD5EaA7a09521a4c9d1",
+            "publicKey": "043ade6599fe22ca61588e4aecfa48d639c26d00e7851423d471c2ba7b86dde4ce1d908a829faa3575c8fbda8ea17f20826ed52b7a54c30e58eb0ef0ece51abbc5",
+            "privateKey": "0xaf971d2bb80b5ed405ebb774e89f998d679d6ce7aacd1cd2a8c085ca4ea13888"
+        },
+        {
+            "index": 6,
+            "role": "spare",
+            "name": "spare2",
+            "address": "0x7DCB07c9B3A7D7E772917A4182e6191b89d7dCa3",
+            "publicKey": "047c49ea10e9698f28ef8b46990ee95fe51f28190dbd2e588f67cacc4285f58056af5c17b3b035924141e76474ea7673251efcee5c5863e8b8c6d6f54f2631f98b",
+            "privateKey": "0xd2f081c04364849270aa464320143dc19f9bec16df149214db27dbe969830d80"
+        },
+        {
+            "index": 7,
+            "role": "spare",
+            "name": "spare3",
+            "address": "0xF4417D5f63adE484a82dCcb608AB5Ca6750EDb1A",
+            "publicKey": "04ce81a810541bc446ca07159610f110e6afe91e2deb2fc6fa380cfeadd4a7a06eb2ef967e4902e612287843d5d9c46448d439edaa7e65ad150e9cdcbf5bf60059",
+            "privateKey": "0x8032b1725e6e26c25fbdedc02228d9b5d2cd964bdf04d1529c643f69ac5b662b"
+        },
+        {
+            "index": 8,
+            "role": "spare",
+            "name": "spare4",
+            "address": "0x244A187411a2b4b63e57f613D9380579dA29640B",
+            "publicKey": "0435a2915cb084f509070c0d113f20c0703829ddf10a0eaf644a31eb591d51028b4b6da25e877180a549d49e9706ed0aed0274f89a0ff6307a1da91fb839727764",
+            "privateKey": "0xfa925d5285b9ad3b328fb6025577f5e30b985d1a0a0c48b6a73cb98d179c739d"
+        },
+        {
+            "index": 9,
+            "role": "spare",
+            "name": "spare5",
+            "address": "0xE174CD4b4bdbdc5d64D10B44544c3E51046d2EB7",
+            "publicKey": "040324056104444b4e89756ab736af32b6acd17b044c081c1a5ea2c283f1da274e0dae0653b0b609cace887de6667fd54b2ac02dc502015a919c3b011289b6c5f0",
+            "privateKey": "0xde02089b6a3493a49c0e6ae5a7a3206bc9a8f5c1b6e5f716a044eb6bac0d9bc9"
+        },
+        {
+            "index": 10,
+            "role": "spare",
+            "name": "spare6",
+            "address": "0xA2021cC390F06d6525E54B7Fba3763F3992fE409",
+            "publicKey": "049c9fe94605e6d4cbabd64336538cf6918552d64c47326264804ed531592529f80188bf452c7dd66b9bd5fd35f874a205821915fe7910b3cd13498ad667b4ef41",
+            "privateKey": "0xa8b5b3a112a608cbc0786cec8dd5bd2a8e743f35954777920bdfa24676c9f822"
+        },
+        {
+            "index": 11,
+            "role": "spare",
+            "name": "spare7",
+            "address": "0x0DC05515B3d6055CaC7216634A478e371719F1B3",
+            "publicKey": "043b17b57f4b926e76c2bc0c5f152fbf41e4e77c7b934c3d22976f7074833fad158c7b91cfce6d18f02c712587c07b22613ade56155c57cd19a3ce37650aeaaa96",
+            "privateKey": "0x3440d97abe4ed969ab475d9b0f2a1d596093f26ee1a124a4c2a1b35ab46bb513"
+        },
+        {
+            "index": 12,
+            "role": "spare",
+            "name": "spare8",
+            "address": "0xC5A1Ab941871884D0323Ae2b6c58487cc1ab028E",
+            "publicKey": "04a0d47074223f68cd83bcd4cf88b4fe75c2b5d53dbb84413518f180aa0001ced362976a56ad84c8b64ad33f800460a33129452a5141e636a3a8703b34134a42a8",
+            "privateKey": "0x98da6cc9130127ef0fede6e274d6eec2c9c5dc889d829c0c3b6b0b239f1bd96e"
+        },
+        {
+            "index": 13,
+            "role": "spare",
+            "name": "spare9",
+            "address": "0xe302fD802B5a1BBE38b68776f37558f66eBE9b78",
+            "publicKey": "045548b186a57117415ef6b9c5d087a19cc34adcf5d7fb449b23687897d3ffa0b9f48981a3e6f774e98af4971896f943678cb01d8c098cc8da370045d261c65034",
+            "privateKey": "0x38c0fad4eed6055cfa895ab5b7a960d63590d1fec74ba88a50556d30246c0465"
+        },
+        {
+            "index": 14,
+            "role": "spare",
+            "name": "spare10",
+            "address": "0xd4a219b096D48b90a0Ad98D3a064C6118190d975",
+            "publicKey": "04afafc3d6621e2aecbed734716690910fa52a59bc141b32d6dc6eb7f195617ed0090c1ec20a322ed16c6bd2dbcf401e3a11db4439312eaecbb583db46286961c5",
+            "privateKey": "0x09e7ac76e2472ab20c73130149f70fff0cc39bc9684145a16f86eaf503ba3258"
+        }
+    ]
+}

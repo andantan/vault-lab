@@ -1,0 +1,45 @@
+{
+    "config": {
+        "chainId": 20001209,
+        "homesteadBlock": 0,
+        "eip150Block": 0,
+        "eip155Block": 0,
+        "eip158Block": 0,
+        "byzantiumBlock": 0,
+        "constantinopleBlock": 0,
+        "petersburgBlock": 0,
+        "istanbulBlock": 0,
+        "berlinBlock": 0,
+        "londonBlock": 0,
+        "shanghaiTime": 0,
+        "cancunTime": 0,
+        "terminalTotalDifficulty": 0,
+        "terminalTotalDifficultyPassed": true,
+        "blobSchedule": {
+            "cancun": {
+                "target": 3,
+                "max": 6,
+                "baseFeeUpdateFraction": 3338477
+            }
+        }
+    },
+    "difficulty": "0x0",
+    "gasLimit": "0x1c9c380",
+    "alloc": {
+        "ebd69375d51a8472df22a3c18405b5a2586c2aa2": { "balance": "10000000000000000000000" },
+        "8336c196abb9e7092c879c28d352b39d3f2f3d7a": { "balance": "10000000000000000000000" },
+        "2c822ac4d8856b417b3e14d75bd7e5e79be4bbd2": { "balance": "10000000000000000000000" },
+        "f303c516242552fea8f68de0b8e6bcbfb3ca44d8": { "balance": "10000000000000000000000" },
+        "6ceadf786a52b109708eb296a5e6cc9f9b6d751d": { "balance": "10000000000000000000000" },
+        "8e8db60047d1ca73194a8fd5eaa7a09521a4c9d1": { "balance": "10000000000000000000000" },
+        "7dcb07c9b3a7d7e772917a4182e6191b89d7dca3": { "balance": "10000000000000000000000" },
+        "f4417d5f63ade484a82dccb608ab5ca6750edb1a": { "balance": "10000000000000000000000" },
+        "244a187411a2b4b63e57f613d9380579da29640b": { "balance": "10000000000000000000000" },
+        "e174cd4b4bdbdc5d64d10b44544c3e51046d2eb7": { "balance": "10000000000000000000000" },
+        "a2021cc390f06d6525e54b7fba3763f3992fe409": { "balance": "10000000000000000000000" },
+        "0dc05515b3d6055cac7216634a478e371719f1b3": { "balance": "10000000000000000000000" },
+        "c5a1ab941871884d0323ae2b6c58487cc1ab028e": { "balance": "10000000000000000000000" },
+        "e302fd802b5a1bbe38b68776f37558f66ebe9b78": { "balance": "10000000000000000000000" },
+        "d4a219b096d48b90a0ad98d3a064c6118190d975": { "balance": "10000000000000000000000" }
+    }
+}
