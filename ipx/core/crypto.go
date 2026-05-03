@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/ecdsa"
 	"errors"
+	"strings"
 
 	"github.com/andantan/evmlab/core/types"
 	"github.com/ethereum/go-ethereum/common"
@@ -36,7 +37,7 @@ func GenerateKey() (*EVMSecp256k1Key, error) {
 // DeriveKeyFromHex reconstructs an EVMSecp256k1Key from hex-encoded strings and verifies
 // that the stored public key and address are consistent with the private key.
 func DeriveKeyFromHex(privHex, pubHex, addrHex string) (*EVMSecp256k1Key, error) {
-	priv, err := crypto.HexToECDSA(privHex)
+	priv, err := crypto.HexToECDSA(strings.TrimPrefix(privHex, "0x"))
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +45,7 @@ func DeriveKeyFromHex(privHex, pubHex, addrHex string) (*EVMSecp256k1Key, error)
 	pub := priv.Public().(*ecdsa.PublicKey)
 	addr := crypto.PubkeyToAddress(*pub)
 
-	if types.NewPublicKey(pub).Hex() != pubHex {
+	if types.NewPublicKey(pub).Hex() != strings.TrimPrefix(pubHex, "0x") {
 		return nil, errors.New("stored public key does not match private key")
 	}
 

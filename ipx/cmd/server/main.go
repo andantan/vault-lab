@@ -11,7 +11,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/andantan/evmlab/api/handler"
+	"github.com/andantan/evmlab/api/handler/v1"
+	"github.com/andantan/evmlab/api/handler/v2"
 	_ "github.com/andantan/evmlab/docs"
 	"github.com/andantan/evmlab/internal/config"
 	"github.com/andantan/evmlab/internal/rpc"
@@ -47,9 +48,27 @@ func run() error {
 
 	r.Get("/swagger/*", httpSwagger.WrapHandler)
 
-	r.Post("/eth/transfers", handler.NewTransferHandler(cfg, client).Transfer)
+	r.Route("/evm/v1", func(r chi.Router) {
+		hash := v1.NewHashHandler()
+		r.Post("/hash/keccak256/legacy", hash.Keccak256Legacy)
+		r.Post("/hash/keccak256/personal", hash.Keccak256Personal)
 
-	addr := ":33152"
-	fmt.Println("Listening on", addr)
-	return http.ListenAndServe(addr, r)
+		sign := v1.NewSignHandler(cfg)
+		r.Post("/sign", sign.Sign)
+		r.Post("/sign/verify/by-public-key", sign.VerifyByPublicKey)
+		r.Post("/sign/verify/by-address", sign.VerifyByAddress)
+
+		tx := v1.NewTransactionHandler(cfg)
+		r.Post("/transaction/legacy/build", tx.BuildLegacyNativeTransfer)
+		r.Post("/transaction/legacy/sign", tx.SignLegacyNativeTransfer)
+	})
+
+	r.Route("/evm/v2", func(r chi.Router) {
+		transfer := v2.NewTransferHandler(cfg, client)
+
+		r.Post("/transfers/native/eip1559", transfer.Transfer)
+	})
+
+	fmt.Println("Listening on", cfg.ServerAddr)
+	return http.ListenAndServe(cfg.ServerAddr, r)
 }

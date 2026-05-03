@@ -1,4 +1,4 @@
-package handler
+package v2
 
 type transferRequest struct {
 	From  string `json:"from"` // sender address

@@ -8,7 +8,7 @@ BLOCKSCOUT_DB_VOLUME = evmlab-blockscout-db-data
 BIN_DIR = bin
 BUILD_DIR = build
 
-GO_DIR = go
+GO_DIR = ipx
 GO_DEPLOYER_BIN = contract_deployer
 GO_SERVER_BIN   = server
 
@@ -20,7 +20,7 @@ EXPLORER_URL ?= http://localhost:3000
 	explorer \
 	compile standard-json deploy test \
 	go-build-deployer go-build-server go-build \
-	server go-test \
+	server go-test swag \
 	clean
 
 help:
@@ -47,6 +47,7 @@ help:
 	@echo "  make go-build-server   Build server binary"
 	@echo "  make server            Build and run API server"
 	@echo "  make go-test           Run Go tests"
+	@echo "  make swag            Regenerate Swagger docs"
 	@echo ""
 	@echo "  make clean           Remove generated build outputs"
 
@@ -109,11 +110,14 @@ go-build-server: $(BIN_DIR)
 
 go-build: go-build-deployer go-build-server
 
-server: go-build-server
+server: go-build-server swag
 	./$(BIN_DIR)/$(GO_SERVER_BIN)
 
 go-test:
 	cd $(GO_DIR) && go test ./...
+
+swag:
+	cd $(GO_DIR) && swag init -g cmd/server/main.go -o docs
 
 clean:
 	rm -rf $(BIN_DIR)

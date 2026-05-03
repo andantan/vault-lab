@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/hex"
 	"fmt"
 	"math/big"
 	"strconv"
@@ -17,4 +18,14 @@ func HexToBigInt(s string) (*big.Int, error) {
 		return nil, fmt.Errorf("invalid hex integer: %s", s)
 	}
 	return n, nil
+}
+
+// ParseHex decodes a hex string (with or without 0x prefix) into bytes.
+func ParseHex(s string) ([]byte, error) {
+	s = strings.TrimPrefix(strings.TrimSpace(s), "0x")
+	b, err := hex.DecodeString(s)
+	if err != nil {
+		return nil, fmt.Errorf("invalid hex: %w", err)
+	}
+	return b, nil
 }

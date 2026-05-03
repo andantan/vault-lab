@@ -9,9 +9,10 @@ import (
 )
 
 type Config struct {
-	RPCURL  string `yaml:"rpc_url"`
-	ChainID int64  `yaml:"chain_id"`
-	Keys    []Key  `yaml:"keys"`
+	RPCURL     string `yaml:"rpc_url"`
+	ChainID    int64  `yaml:"chain_id"`
+	ServerAddr string `yaml:"server_addr"`
+	Keys       []Key  `yaml:"keys"`
 }
 
 type Key struct {
@@ -37,6 +38,9 @@ func Load(path string) (*Config, error) {
 	}
 	if cfg.ChainID == 0 {
 		return nil, fmt.Errorf("config: chain_id is required")
+	}
+	if cfg.ServerAddr == "" {
+		return nil, fmt.Errorf("config: server_addr is required")
 	}
 
 	return &cfg, nil

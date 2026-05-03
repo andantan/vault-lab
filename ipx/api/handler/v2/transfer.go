@@ -1,13 +1,15 @@
-package handler
+package v2
 
 import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"math/big"
 	"net/http"
 	"time"
 
+	"github.com/andantan/evmlab/api/handler"
 	"github.com/andantan/evmlab/core"
 	coretypes "github.com/andantan/evmlab/core/types"
 	"github.com/andantan/evmlab/internal/config"
@@ -28,7 +30,7 @@ func NewTransferHandler(cfg *config.Config, client *rpc.Client) *TransferHandler
 // Transfer godoc
 // @Summary      Send ETH (EIP-1559)
 // @Description  Signs and broadcasts a dynamic-fee ETH transfer transaction
-// @Tags         eth
+// @Tags         transfer
 // @Accept       json
 // @Produce      json
 // @Param        body  body      transferRequest   true  "Transfer request"
@@ -36,33 +38,33 @@ func NewTransferHandler(cfg *config.Config, client *rpc.Client) *TransferHandler
 // @Failure      400   {object}  map[string]string
 // @Failure      502   {object}  map[string]string
 // @Failure      504   {object}  map[string]string
-// @Router       /eth/transfers [post]
+// @Router       /evm/v2/transfers/native/eip1559 [post]
 func (h *TransferHandler) Transfer(w http.ResponseWriter, r *http.Request) {
 	var req transferRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body")
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("invalid request body: %s", err))
 		return
 	}
 	if req.From == "" || req.To == "" || req.Value == "" {
-		writeError(w, http.StatusBadRequest, "from, to, value are required")
+		handler.WriteError(w, http.StatusBadRequest, "from, to, value are required")
 		return
 	}
 
 	value, ok := new(big.Int).SetString(req.Value, 10)
 	if !ok {
-		writeError(w, http.StatusBadRequest, "value must be a decimal wei amount")
+		handler.WriteError(w, http.StatusBadRequest, "value must be a decimal wei amount")
 		return
 	}
 
 	key, err := h.cfg.KeyByAddress(req.From)
 	if err != nil {
-		writeError(w, http.StatusBadRequest, err.Error())
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("from: %s", err))
 		return
 	}
 
 	evmKey, err := core.DeriveKeyFromHex(key.PrivateKey, key.PublicKey, key.Address)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to derive key")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to derive key: %s", err))
 		return
 	}
 
@@ -70,12 +72,12 @@ func (h *TransferHandler) Transfer(w http.ResponseWriter, r *http.Request) {
 
 	chainIDHex, err := h.client.ChainID(ctx)
 	if err != nil {
-		writeError(w, http.StatusBadGateway, "failed to get chain id")
+		handler.WriteError(w, http.StatusBadGateway, fmt.Sprintf("failed to get chain id: %s", err))
 		return
 	}
 	chainID, err := util.HexToBigInt(chainIDHex)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to parse chain id")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to parse chain id: %s", err))
 		return
 	}
 
@@ -83,34 +85,34 @@ func (h *TransferHandler) Transfer(w http.ResponseWriter, r *http.Request) {
 
 	nonceHex, err := h.client.GetTransactionCount(ctx, fromAddr, "pending")
 	if err != nil {
-		writeError(w, http.StatusBadGateway, "failed to get nonce")
+		handler.WriteError(w, http.StatusBadGateway, fmt.Sprintf("failed to get nonce: %s", err))
 		return
 	}
 	nonce, err := util.HexToUint64(nonceHex)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to parse nonce")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to parse nonce: %s", err))
 		return
 	}
 
 	tipCapHex, err := h.client.MaxPriorityFeePerGas(ctx)
 	if err != nil {
-		writeError(w, http.StatusBadGateway, "failed to get tip cap")
+		handler.WriteError(w, http.StatusBadGateway, fmt.Sprintf("failed to get tip cap: %s", err))
 		return
 	}
 	tipCap, err := util.HexToBigInt(tipCapHex)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to parse tip cap")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to parse tip cap: %s", err))
 		return
 	}
 
 	block, err := h.client.BlockByNumber(ctx, "latest")
 	if err != nil {
-		writeError(w, http.StatusBadGateway, "failed to get latest block")
+		handler.WriteError(w, http.StatusBadGateway, fmt.Sprintf("failed to get latest block: %s", err))
 		return
 	}
 	baseFee, err := util.HexToBigInt(block["baseFeePerGas"].(string))
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to parse base fee")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to parse base fee: %s", err))
 		return
 	}
 	feeCap := new(big.Int).Add(new(big.Int).Mul(baseFee, big.NewInt(2)), tipCap)
@@ -128,44 +130,34 @@ func (h *TransferHandler) Transfer(w http.ResponseWriter, r *http.Request) {
 
 	unsigned, err := core.Codec.EncodeDynamicFeeUnsigned(tx)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to encode tx")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode tx: %s", err))
 		return
 	}
 
 	txHash := core.Hasher.Hash(unsigned)
 	sig, err := core.Signer.Sign(txHash, *evmKey.PrivateKey)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to sign tx")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to sign tx: %s", err))
 		return
 	}
 
 	rawTxBytes, err := core.Codec.EncodeDynamicFeeSigned(tx, sig)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to encode signed tx")
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode signed tx: %s", err))
 		return
 	}
 
 	txHashHex, err := h.client.SendRawTransaction(ctx, "0x"+hex.EncodeToString(rawTxBytes))
 	if err != nil {
-		writeError(w, http.StatusBadGateway, "failed to send tx: "+err.Error())
+		handler.WriteError(w, http.StatusBadGateway, fmt.Sprintf("failed to send tx: %s", err))
 		return
 	}
 
 	_, err = h.client.WaitForReceipt(context.Background(), txHashHex, 30*time.Second)
 	if err != nil {
-		writeError(w, http.StatusGatewayTimeout, err.Error())
+		handler.WriteError(w, http.StatusGatewayTimeout, fmt.Sprintf("failed to wait for receipt: %s", err))
 		return
 	}
 
-	writeJSON(w, http.StatusOK, transferResponse{TxHash: txHashHex})
-}
-
-func writeJSON(w http.ResponseWriter, status int, v any) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(v)
-}
-
-func writeError(w http.ResponseWriter, status int, msg string) {
-	writeJSON(w, status, map[string]string{"error": msg})
+	handler.WriteJSON(w, http.StatusOK, transferResponse{TxHash: txHashHex})
 }
