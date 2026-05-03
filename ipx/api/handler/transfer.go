@@ -25,16 +25,6 @@ func NewTransferHandler(cfg *config.Config, client *rpc.Client) *TransferHandler
 	return &TransferHandler{cfg: cfg, client: client}
 }
 
-type transferRequest struct {
-	From  string `json:"from"` // key alias
-	To    string `json:"to"`
-	Value string `json:"value"` // wei as decimal string
-}
-
-type transferResponse struct {
-	TxHash string `json:"tx_hash"`
-}
-
 // Transfer godoc
 // @Summary      Send ETH (EIP-1559)
 // @Description  Signs and broadcasts a dynamic-fee ETH transfer transaction
@@ -64,7 +54,7 @@ func (h *TransferHandler) Transfer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	key, err := h.cfg.KeyByAlias(req.From)
+	key, err := h.cfg.KeyByAddress(req.From)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return

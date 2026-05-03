@@ -3,17 +3,19 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	RPCURL  string         `yaml:"rpc_url"`
-	ChainID int64          `yaml:"chain_id"`
-	Keys    map[string]Key `yaml:"keys"`
+	RPCURL  string `yaml:"rpc_url"`
+	ChainID int64  `yaml:"chain_id"`
+	Keys    []Key  `yaml:"keys"`
 }
 
 type Key struct {
+	Alias      string `yaml:"alias"`
 	Address    string `yaml:"address"`
 	PublicKey  string `yaml:"public_key"`
 	PrivateKey string `yaml:"private_key"`
@@ -40,10 +42,11 @@ func Load(path string) (*Config, error) {
 	return &cfg, nil
 }
 
-func (c *Config) KeyByAlias(alias string) (*Key, error) {
-	key, ok := c.Keys[alias]
-	if !ok {
-		return nil, fmt.Errorf("config: key with alias %q not found", alias)
+func (c *Config) KeyByAddress(address string) (*Key, error) {
+	for i := range c.Keys {
+		if strings.EqualFold(c.Keys[i].Address, address) {
+			return &c.Keys[i], nil
+		}
 	}
-	return &key, nil
+	return nil, fmt.Errorf("config: key with address %q not found", address)
 }

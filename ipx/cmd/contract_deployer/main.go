@@ -34,8 +34,8 @@ func run() error {
 	flag.StringVar(&configPath, "config", "config.yaml", "path to config file")
 	flag.StringVar(&contractPath, "contract", "", "path to the .sol file to deploy (relative to project root)")
 	flag.StringVar(&contractPath, "c", "", "path to the .sol file to deploy (relative to project root)")
-	flag.StringVar(&alias, "deployer", "", "key alias to use as deployer")
-	flag.StringVar(&alias, "d", "", "key alias to use as deployer")
+	flag.StringVar(&alias, "deployer", "", "deployer address")
+	flag.StringVar(&alias, "d", "", "deployer address")
 	flag.Parse()
 
 	if contractPath == "" {
@@ -43,7 +43,7 @@ func run() error {
 		os.Exit(1)
 	}
 	if alias == "" {
-		_, _ = fmt.Fprintln(os.Stderr, "error: -deployer/-d is required")
+		_, _ = fmt.Fprintln(os.Stderr, "error: -deployer/-d address is required")
 		os.Exit(1)
 	}
 
@@ -57,7 +57,7 @@ func run() error {
 		return err
 	}
 
-	key, err := cfg.KeyByAlias(alias)
+	key, err := cfg.KeyByAddress(alias)
 	if err != nil {
 		return err
 	}
