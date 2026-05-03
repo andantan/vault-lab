@@ -4,7 +4,6 @@
     "description": "A multi-account Ethereum vault built with Solidity, with Go low-level RPC tooling and Rust high-safety client experiments.",
     "private": true,
     "scripts": {
-        "compile": "solcjs --abi --bin --base-path . -o build contracts/MultiAccountVault.sol",
         "clean": "rm -rf build artifacts cache",
         "test": "echo \"No JavaScript tests configured\""
     },

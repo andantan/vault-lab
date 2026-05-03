@@ -2,7 +2,10 @@ module github.com/andantan/vault-lab/go
 
 go 1.26.1
 
-require github.com/ethereum/go-ethereum v1.17.2
+require (
+	github.com/ethereum/go-ethereum v1.17.2
+	gopkg.in/yaml.v3 v3.0.1
+)
 
 require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect

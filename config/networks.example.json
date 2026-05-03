@@ -1,9 +1,0 @@
-{
-    "localAccounts": {
-        "path": "deploy/geth/accounts.local.example.json"
-    },
-    "active": {
-        "rpcUrlEnv": "RPC_URL",
-        "chainIdEnv": "CHAIN_ID"
-    }
-}
