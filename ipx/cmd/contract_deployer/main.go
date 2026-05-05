@@ -139,7 +139,7 @@ func run() error {
 		Data:      bytecode,
 	}
 
-	unsigned, err := core.Codec.EncodeDynamicFeeUnsigned(tx)
+	unsigned, err := core.RLP.EncodeDynamicFeeUnsigned(tx)
 	if err != nil {
 		return fmt.Errorf("encode unsigned tx: %w", err)
 	}
@@ -150,7 +150,7 @@ func run() error {
 		return fmt.Errorf("sign tx: %w", err)
 	}
 
-	rawTxBytes, err := core.Codec.EncodeDynamicFeeSigned(tx, sig)
+	rawTxBytes, err := core.RLP.EncodeDynamicFeeSigned(tx, sig)
 	if err != nil {
 		return fmt.Errorf("encode signed tx: %w", err)
 	}

@@ -113,13 +113,19 @@ func (r *BuildLegacyTransactionRequest) ValidateRequest() error {
 	var ok bool
 
 	r.chainID, ok = new(big.Int).SetString(strings.TrimSpace(r.ChainID), 10)
-	if !ok || r.chainID.Sign() <= 0 {
-		return errors.New("chain_id: must be a positive decimal integer")
+	if !ok {
+		return errors.New("chain_id: must be a decimal integer")
+	}
+	if r.chainID.Sign() <= 0 {
+		return errors.New("chain_id: must be positive")
 	}
 
 	r.gasPrice, ok = new(big.Int).SetString(strings.TrimSpace(r.GasPrice), 10)
-	if !ok || r.gasPrice.Sign() <= 0 {
-		return errors.New("gas_price: must be a positive decimal integer")
+	if !ok {
+		return errors.New("gas_price: must be a decimal integer")
+	}
+	if r.gasPrice.Sign() <= 0 {
+		return errors.New("gas_price: must be positive")
 	}
 
 	if r.GasLimit == 0 {
@@ -132,9 +138,16 @@ func (r *BuildLegacyTransactionRequest) ValidateRequest() error {
 	}
 	r.to = common.BytesToAddress(toBytes)
 
-	r.value, ok = new(big.Int).SetString(strings.TrimSpace(r.Value), 10)
-	if !ok || r.value.Sign() < 0 {
-		return errors.New("value: must be a non-negative decimal integer")
+	if v := strings.TrimSpace(r.Value); v == "" {
+		r.value = new(big.Int)
+	} else {
+		r.value, ok = new(big.Int).SetString(v, 10)
+		if !ok {
+			return errors.New("value: must be a decimal integer")
+		}
+		if r.value.Sign() < 0 {
+			return errors.New("value: must be non-negative")
+		}
 	}
 
 	if d := strings.TrimSpace(r.Data); d == "" || d == "0x" {
@@ -194,18 +207,27 @@ func (r *BuildDynamicFeeTransactionRequest) ValidateRequest() error {
 	var ok bool
 
 	r.chainID, ok = new(big.Int).SetString(strings.TrimSpace(r.ChainID), 10)
-	if !ok || r.chainID.Sign() <= 0 {
-		return errors.New("chain_id: must be a positive decimal integer")
+	if !ok {
+		return errors.New("chain_id: must be a decimal integer")
+	}
+	if r.chainID.Sign() <= 0 {
+		return errors.New("chain_id: must be positive")
 	}
 
 	r.gasTipCap, ok = new(big.Int).SetString(strings.TrimSpace(r.MaxPriorityFeePerGas), 10)
-	if !ok || r.gasTipCap.Sign() <= 0 {
-		return errors.New("max_priority_fee_per_gas: must be a positive decimal integer")
+	if !ok {
+		return errors.New("max_priority_fee_per_gas: must be a decimal integer")
+	}
+	if r.gasTipCap.Sign() <= 0 {
+		return errors.New("max_priority_fee_per_gas: must be positive")
 	}
 
 	r.gasFeeCap, ok = new(big.Int).SetString(strings.TrimSpace(r.MaxFeePerGas), 10)
-	if !ok || r.gasFeeCap.Sign() <= 0 {
-		return errors.New("max_fee_per_gas: must be a positive decimal integer")
+	if !ok {
+		return errors.New("max_fee_per_gas: must be a decimal integer")
+	}
+	if r.gasFeeCap.Sign() <= 0 {
+		return errors.New("max_fee_per_gas: must be positive")
 	}
 
 	if r.GasLimit == 0 {
@@ -218,9 +240,16 @@ func (r *BuildDynamicFeeTransactionRequest) ValidateRequest() error {
 	}
 	r.to = common.BytesToAddress(toBytes)
 
-	r.value, ok = new(big.Int).SetString(strings.TrimSpace(r.Value), 10)
-	if !ok || r.value.Sign() < 0 {
-		return errors.New("value: must be a non-negative decimal integer")
+	if v := strings.TrimSpace(r.Value); v == "" {
+		r.value = new(big.Int)
+	} else {
+		r.value, ok = new(big.Int).SetString(v, 10)
+		if !ok {
+			return errors.New("value: must be a decimal integer")
+		}
+		if r.value.Sign() < 0 {
+			return errors.New("value: must be non-negative")
+		}
 	}
 
 	if d := strings.TrimSpace(r.Data); d == "" || d == "0x" {

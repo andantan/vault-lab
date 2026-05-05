@@ -9,9 +9,9 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-type codec struct{}
+type rlpCodec struct{}
 
-var Codec = new(codec)
+var RLP = new(rlpCodec)
 
 // legacyTxRLP is the RLP-serializable form for legacy transactions.
 // Field order must match: [nonce, gasPrice, gasLimit, to, value, data, v, r, s].
@@ -29,7 +29,7 @@ type legacyTxRLP struct {
 
 // EncodeLegacyUnsigned returns the RLP encoding for EIP-155 signing:
 // [nonce, gasPrice, gasLimit, to, value, data, chainId, 0, 0]
-func (c *codec) EncodeLegacyUnsigned(tx *types.LegacyTx) ([]byte, error) {
+func (c *rlpCodec) EncodeLegacyUnsigned(tx *types.LegacyTx) ([]byte, error) {
 	enc, err := rlp.EncodeToBytes(&legacyTxRLP{
 		Nonce:    tx.Nonce,
 		GasPrice: tx.GasPrice,
@@ -49,7 +49,7 @@ func (c *codec) EncodeLegacyUnsigned(tx *types.LegacyTx) ([]byte, error) {
 }
 
 // EncodeLegacySigned returns the signed RLP with EIP-155 v = chainId * 2 + 35 + recoveryId.
-func (c *codec) EncodeLegacySigned(tx *types.LegacyTx, sig *types.Signature) ([]byte, error) {
+func (c *rlpCodec) EncodeLegacySigned(tx *types.LegacyTx, sig *types.Signature) ([]byte, error) {
 	v := new(big.Int).Mul(tx.ChainID, big.NewInt(2))
 	v.Add(v, big.NewInt(35))
 	v.Add(v, new(big.Int).SetUint64(uint64(sig.V())))
@@ -74,7 +74,7 @@ func (c *codec) EncodeLegacySigned(tx *types.LegacyTx, sig *types.Signature) ([]
 
 // DecodeLegacyUnsigned decodes an unsigned EIP-155 RLP back into a LegacyTx.
 // The V field of the unsigned encoding carries chainId, which is extracted here.
-func (c *codec) DecodeLegacyUnsigned(raw []byte) (*types.LegacyTx, error) {
+func (c *rlpCodec) DecodeLegacyUnsigned(raw []byte) (*types.LegacyTx, error) {
 	var dec legacyTxRLP
 	if err := rlp.DecodeBytes(raw, &dec); err != nil {
 		return nil, err
@@ -129,7 +129,7 @@ type dynamicFeeTxRLPSigned struct {
 
 // EncodeDynamicFeeUnsigned returns the EIP-1559 signing preimage: 0x02 || rlp([chainId, ...]).
 // Pass the result to Hasher.Hash to get the digest for signing.
-func (c *codec) EncodeDynamicFeeUnsigned(tx *types.DynamicFeeTx) ([]byte, error) {
+func (c *rlpCodec) EncodeDynamicFeeUnsigned(tx *types.DynamicFeeTx) ([]byte, error) {
 	rlpBytes, err := rlp.EncodeToBytes(&dynamicFeeTxRLPUnsigned{
 		ChainID:    tx.ChainID,
 		Nonce:      tx.Nonce,
@@ -150,7 +150,7 @@ func (c *codec) EncodeDynamicFeeUnsigned(tx *types.DynamicFeeTx) ([]byte, error)
 
 // EncodeDynamicFeeSigned returns the EIP-1559 wire format: 0x02 || rlp([chainId, ..., v, r, s]).
 // v is the raw recovery id (0 or 1) — no EIP-155 adjustment.
-func (c *codec) EncodeDynamicFeeSigned(tx *types.DynamicFeeTx, sig *types.Signature) ([]byte, error) {
+func (c *rlpCodec) EncodeDynamicFeeSigned(tx *types.DynamicFeeTx, sig *types.Signature) ([]byte, error) {
 	rlpBytes, err := rlp.EncodeToBytes(&dynamicFeeTxRLPSigned{
 		ChainID:    tx.ChainID,
 		Nonce:      tx.Nonce,
@@ -173,7 +173,7 @@ func (c *codec) EncodeDynamicFeeSigned(tx *types.DynamicFeeTx, sig *types.Signat
 }
 
 // DecodeDynamicFeeUnsigned decodes the EIP-1559 signing preimage (0x02 || rlp([chainId, ...])) back into a DynamicFeeTx.
-func (c *codec) DecodeDynamicFeeUnsigned(raw []byte) (*types.DynamicFeeTx, error) {
+func (c *rlpCodec) DecodeDynamicFeeUnsigned(raw []byte) (*types.DynamicFeeTx, error) {
 	if len(raw) < 1 || raw[0] != 0x02 {
 		return nil, fmt.Errorf("not an EIP-1559 transaction: missing 0x02 prefix")
 	}

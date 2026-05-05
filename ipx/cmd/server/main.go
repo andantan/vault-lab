@@ -67,6 +67,12 @@ func run() error {
 		r.Post("/call", rpcHandler.Call)
 	})
 
+	r.Route("/evm/abi", func(r chi.Router) {
+		abi := misc.NewAbiHandler()
+		r.Post("/selector", abi.Selector)
+		r.Post("/encode", abi.Encode)
+	})
+
 	r.Route("/evm/tool", func(r chi.Router) {
 		tool := misc.NewToolHandler()
 		r.Post("/address/checksum/eip55", tool.ChecksumEIP55)

@@ -9,6 +9,92 @@
     "host": "localhost:33152",
     "basePath": "/",
     "paths": {
+        "/evm/abi/encode": {
+            "post": {
+                "description": "Returns the ABI-encoded calldata (4-byte selector + packed arguments) for the given signature and args.\nSignature must be in canonical form — no spaces, no parameter names (e.g. \"transfer(address,uint256)\").\nSupported types: address | bool | string | bytes | bytes1–bytes32 | uint8/16/32/64/128/256 | int8/16/32/64/128/256\nTuple, array, and slice types are not yet supported.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "abi"
+                ],
+                "summary": "ABI-encode a function call",
+                "parameters": [
+                    {
+                        "description": "Function signature and arguments",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/misc.EncodeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/misc.EncodeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/abi/selector": {
+            "post": {
+                "description": "Returns the 4-byte selector for the given function signature",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "abi"
+                ],
+                "summary": "Compute ABI function selector",
+                "parameters": [
+                    {
+                        "description": "Function signature",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/misc.SelectorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/misc.SelectorResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/evm/rpc/balance": {
             "post": {
                 "description": "Returns the balance for the given address at the specified block in decimal and hex",
@@ -29,7 +115,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.BalanceRequest"
+                            "$ref": "#/definitions/misc.BalanceRequest"
                         }
                     }
                 ],
@@ -37,7 +123,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.BalanceResponse"
+                            "$ref": "#/definitions/misc.BalanceResponse"
                         }
                     },
                     "400": {
@@ -75,7 +161,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.BlockNumberResponse"
+                            "$ref": "#/definitions/misc.BlockNumberResponse"
                         }
                     },
                     "500": {
@@ -110,7 +196,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.CallRequest"
+                            "$ref": "#/definitions/misc.CallRequest"
                         }
                     }
                 ],
@@ -159,7 +245,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.ChainIDResponse"
+                            "$ref": "#/definitions/misc.ChainIDResponse"
                         }
                     },
                     "500": {
@@ -194,7 +280,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.CodeRequest"
+                            "$ref": "#/definitions/misc.CodeRequest"
                         }
                     }
                 ],
@@ -202,7 +288,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.CodeResponse"
+                            "$ref": "#/definitions/misc.CodeResponse"
                         }
                     },
                     "400": {
@@ -240,7 +326,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.BaseFeePerGasResponse"
+                            "$ref": "#/definitions/misc.BaseFeePerGasResponse"
                         }
                     },
                     "500": {
@@ -269,7 +355,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.MaxFeePerGasResponse"
+                            "$ref": "#/definitions/misc.MaxFeePerGasResponse"
                         }
                     },
                     "500": {
@@ -298,7 +384,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.MaxPriorityFeePerGasResponse"
+                            "$ref": "#/definitions/misc.MaxPriorityFeePerGasResponse"
                         }
                     },
                     "500": {
@@ -333,7 +419,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.EstimateGasRequest"
+                            "$ref": "#/definitions/misc.EstimateGasRequest"
                         }
                     }
                 ],
@@ -341,7 +427,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.EstimateGasResponse"
+                            "$ref": "#/definitions/misc.EstimateGasResponse"
                         }
                     },
                     "400": {
@@ -379,7 +465,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.GasPriceResponse"
+                            "$ref": "#/definitions/misc.GasPriceResponse"
                         }
                     },
                     "500": {
@@ -414,7 +500,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.NonceRequest"
+                            "$ref": "#/definitions/misc.NonceRequest"
                         }
                     }
                 ],
@@ -422,7 +508,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.NonceResponse"
+                            "$ref": "#/definitions/misc.NonceResponse"
                         }
                     },
                     "400": {
@@ -466,7 +552,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.TransactionRequest"
+                            "$ref": "#/definitions/misc.TransactionRequest"
                         }
                     }
                 ],
@@ -519,7 +605,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.TransactionRequest"
+                            "$ref": "#/definitions/misc.TransactionRequest"
                         }
                     }
                 ],
@@ -572,7 +658,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.SendTransactionRequest"
+                            "$ref": "#/definitions/misc.SendTransactionRequest"
                         }
                     }
                 ],
@@ -580,7 +666,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.SendTransactionResponse"
+                            "$ref": "#/definitions/misc.SendTransactionResponse"
                         }
                     },
                     "400": {
@@ -624,7 +710,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.ChecksumEIP55Request"
+                            "$ref": "#/definitions/misc.ChecksumEIP55Request"
                         }
                     }
                 ],
@@ -632,7 +718,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.ChecksumEIP55Response"
+                            "$ref": "#/definitions/misc.ChecksumEIP55Response"
                         }
                     },
                     "400": {
@@ -667,7 +753,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.DeriveKeyRequest"
+                            "$ref": "#/definitions/misc.DeriveKeyRequest"
                         }
                     }
                 ],
@@ -675,7 +761,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.DeriveKeyResponse"
+                            "$ref": "#/definitions/misc.DeriveKeyResponse"
                         }
                     },
                     "400": {
@@ -710,7 +796,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.UnitConvertDecimalRequest"
+                            "$ref": "#/definitions/misc.UnitConvertDecimalRequest"
                         }
                     }
                 ],
@@ -718,7 +804,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.UnitConvertDecimalResponse"
+                            "$ref": "#/definitions/misc.UnitConvertDecimalResponse"
                         }
                     },
                     "400": {
@@ -1201,7 +1287,7 @@
         }
     },
     "definitions": {
-        "v1.BalanceRequest": {
+        "misc.BalanceRequest": {
             "type": "object",
             "properties": {
                 "address": {
@@ -1214,7 +1300,7 @@
                 }
             }
         },
-        "v1.BalanceResponse": {
+        "misc.BalanceResponse": {
             "type": "object",
             "properties": {
                 "balance": {
@@ -1234,7 +1320,7 @@
                 }
             }
         },
-        "v1.BaseFeePerGasResponse": {
+        "misc.BaseFeePerGasResponse": {
             "type": "object",
             "properties": {
                 "base_fee_per_gas": {
@@ -1254,13 +1340,336 @@
                 }
             }
         },
-        "v1.BlockNumberResponse": {
+        "misc.BlockNumberResponse": {
             "type": "object",
             "properties": {
                 "block_number": {
                     "type": "integer"
                 },
                 "block_number_hex": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.CallRequest": {
+            "type": "object",
+            "properties": {
+                "block": {
+                    "type": "string",
+                    "example": "latest"
+                },
+                "data": {
+                    "type": "string",
+                    "example": "0x70a08231..."
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0x8336c196..."
+                }
+            }
+        },
+        "misc.ChainIDResponse": {
+            "type": "object",
+            "properties": {
+                "chain_id": {
+                    "type": "integer"
+                },
+                "chain_id_hex": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.ChecksumEIP55Request": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                }
+            }
+        },
+        "misc.ChecksumEIP55Response": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.CodeRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "block": {
+                    "type": "string",
+                    "example": "latest"
+                }
+            }
+        },
+        "misc.CodeResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "is_contract": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "misc.DeriveKeyRequest": {
+            "type": "object",
+            "properties": {
+                "private_key": {
+                    "type": "string",
+                    "example": "0xea66255f..."
+                }
+            }
+        },
+        "misc.DeriveKeyResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "private_key": {
+                    "type": "string"
+                },
+                "public_key": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.EncodeRequest": {
+            "type": "object",
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "[\"0xDa70aA79...\"",
+                        "\"1000000000000000000\"]"
+                    ]
+                },
+                "signature": {
+                    "type": "string",
+                    "example": "transfer(address,uint256)"
+                }
+            }
+        },
+        "misc.EncodeResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.EstimateGasRequest": {
+            "type": "object",
+            "properties": {
+                "block": {
+                    "type": "string",
+                    "example": "latest"
+                },
+                "data": {
+                    "type": "string",
+                    "example": "0x"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0x8336c196..."
+                },
+                "value": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                }
+            }
+        },
+        "misc.EstimateGasResponse": {
+            "type": "object",
+            "properties": {
+                "ether": {
+                    "type": "string"
+                },
+                "gas_limit": {
+                    "type": "integer"
+                },
+                "gas_limit_hex": {
+                    "type": "string"
+                },
+                "gwei": {
+                    "type": "string"
+                },
+                "wei": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.GasPriceResponse": {
+            "type": "object",
+            "properties": {
+                "ether": {
+                    "type": "string"
+                },
+                "gas_price": {
+                    "type": "string"
+                },
+                "gas_price_hex": {
+                    "type": "string"
+                },
+                "gwei": {
+                    "type": "string"
+                },
+                "wei": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.MaxFeePerGasResponse": {
+            "type": "object",
+            "properties": {
+                "ether": {
+                    "type": "string"
+                },
+                "gwei": {
+                    "type": "string"
+                },
+                "max_fee_per_gas": {
+                    "type": "string"
+                },
+                "max_fee_per_gas_hex": {
+                    "type": "string"
+                },
+                "wei": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.MaxPriorityFeePerGasResponse": {
+            "type": "object",
+            "properties": {
+                "ether": {
+                    "type": "string"
+                },
+                "gwei": {
+                    "type": "string"
+                },
+                "max_priority_fee_per_gas": {
+                    "type": "string"
+                },
+                "max_priority_fee_per_gas_hex": {
+                    "type": "string"
+                },
+                "wei": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.NonceRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "block": {
+                    "type": "string",
+                    "example": "pending"
+                }
+            }
+        },
+        "misc.NonceResponse": {
+            "type": "object",
+            "properties": {
+                "nonce": {
+                    "type": "integer"
+                },
+                "nonce_hex": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.SelectorRequest": {
+            "type": "object",
+            "properties": {
+                "signature": {
+                    "type": "string",
+                    "example": "transfer(address,uint256)"
+                }
+            }
+        },
+        "misc.SelectorResponse": {
+            "type": "object",
+            "properties": {
+                "selector": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.SendTransactionRequest": {
+            "type": "object",
+            "properties": {
+                "raw_tx": {
+                    "type": "string",
+                    "example": "0x02f8..."
+                }
+            }
+        },
+        "misc.SendTransactionResponse": {
+            "type": "object",
+            "properties": {
+                "tx_hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.TransactionRequest": {
+            "type": "object",
+            "properties": {
+                "tx_hash": {
+                    "type": "string",
+                    "example": "0xabc123..."
+                }
+            }
+        },
+        "misc.UnitConvertDecimalRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "ether"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "wei"
+                }
+            }
+        },
+        "misc.UnitConvertDecimalResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "unit": {
                     "type": "string"
                 }
             }
@@ -1357,167 +1766,6 @@
                 }
             }
         },
-        "v1.CallRequest": {
-            "type": "object",
-            "properties": {
-                "block": {
-                    "type": "string",
-                    "example": "latest"
-                },
-                "data": {
-                    "type": "string",
-                    "example": "0x70a08231..."
-                },
-                "from": {
-                    "type": "string",
-                    "example": "0xEbD69375..."
-                },
-                "to": {
-                    "type": "string",
-                    "example": "0x8336c196..."
-                }
-            }
-        },
-        "v1.ChainIDResponse": {
-            "type": "object",
-            "properties": {
-                "chain_id": {
-                    "type": "integer"
-                },
-                "chain_id_hex": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.ChecksumEIP55Request": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "example": "0xEbD69375..."
-                }
-            }
-        },
-        "v1.ChecksumEIP55Response": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.CodeRequest": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "example": "0xEbD69375..."
-                },
-                "block": {
-                    "type": "string",
-                    "example": "latest"
-                }
-            }
-        },
-        "v1.CodeResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "is_contract": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "v1.DeriveKeyRequest": {
-            "type": "object",
-            "properties": {
-                "private_key": {
-                    "type": "string",
-                    "example": "0xea66255f..."
-                }
-            }
-        },
-        "v1.DeriveKeyResponse": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "private_key": {
-                    "type": "string"
-                },
-                "public_key": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.EstimateGasRequest": {
-            "type": "object",
-            "properties": {
-                "block": {
-                    "type": "string",
-                    "example": "latest"
-                },
-                "data": {
-                    "type": "string",
-                    "example": "0x"
-                },
-                "from": {
-                    "type": "string",
-                    "example": "0xEbD69375..."
-                },
-                "to": {
-                    "type": "string",
-                    "example": "0x8336c196..."
-                },
-                "value": {
-                    "type": "string",
-                    "example": "1000000000000000000"
-                }
-            }
-        },
-        "v1.EstimateGasResponse": {
-            "type": "object",
-            "properties": {
-                "ether": {
-                    "type": "string"
-                },
-                "gas_limit": {
-                    "type": "integer"
-                },
-                "gas_limit_hex": {
-                    "type": "string"
-                },
-                "gwei": {
-                    "type": "string"
-                },
-                "wei": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.GasPriceResponse": {
-            "type": "object",
-            "properties": {
-                "ether": {
-                    "type": "string"
-                },
-                "gas_price": {
-                    "type": "string"
-                },
-                "gas_price_hex": {
-                    "type": "string"
-                },
-                "gwei": {
-                    "type": "string"
-                },
-                "wei": {
-                    "type": "string"
-                }
-            }
-        },
         "v1.Keccak256LegacyRequest": {
             "type": "object",
             "properties": {
@@ -1548,87 +1796,6 @@
             "type": "object",
             "properties": {
                 "digest": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.MaxFeePerGasResponse": {
-            "type": "object",
-            "properties": {
-                "ether": {
-                    "type": "string"
-                },
-                "gwei": {
-                    "type": "string"
-                },
-                "max_fee_per_gas": {
-                    "type": "string"
-                },
-                "max_fee_per_gas_hex": {
-                    "type": "string"
-                },
-                "wei": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.MaxPriorityFeePerGasResponse": {
-            "type": "object",
-            "properties": {
-                "ether": {
-                    "type": "string"
-                },
-                "gwei": {
-                    "type": "string"
-                },
-                "max_priority_fee_per_gas": {
-                    "type": "string"
-                },
-                "max_priority_fee_per_gas_hex": {
-                    "type": "string"
-                },
-                "wei": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.NonceRequest": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "example": "0xEbD69375..."
-                },
-                "block": {
-                    "type": "string",
-                    "example": "pending"
-                }
-            }
-        },
-        "v1.NonceResponse": {
-            "type": "object",
-            "properties": {
-                "nonce": {
-                    "type": "integer"
-                },
-                "nonce_hex": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.SendTransactionRequest": {
-            "type": "object",
-            "properties": {
-                "raw_tx": {
-                    "type": "string",
-                    "example": "0x02f8..."
-                }
-            }
-        },
-        "v1.SendTransactionResponse": {
-            "type": "object",
-            "properties": {
-                "tx_hash": {
                     "type": "string"
                 }
             }
@@ -1698,43 +1865,6 @@
             "type": "object",
             "properties": {
                 "signature": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.TransactionRequest": {
-            "type": "object",
-            "properties": {
-                "tx_hash": {
-                    "type": "string",
-                    "example": "0xabc123..."
-                }
-            }
-        },
-        "v1.UnitConvertDecimalRequest": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "from": {
-                    "type": "string",
-                    "example": "ether"
-                },
-                "to": {
-                    "type": "string",
-                    "example": "wei"
-                }
-            }
-        },
-        "v1.UnitConvertDecimalResponse": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "string"
-                },
-                "unit": {
                     "type": "string"
                 }
             }

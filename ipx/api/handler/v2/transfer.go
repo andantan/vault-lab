@@ -128,7 +128,7 @@ func (h *TransferHandler) Transfer(w http.ResponseWriter, r *http.Request) {
 		Data:      nil,
 	}
 
-	unsigned, err := core.Codec.EncodeDynamicFeeUnsigned(tx)
+	unsigned, err := core.RLP.EncodeDynamicFeeUnsigned(tx)
 	if err != nil {
 		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode tx: %s", err))
 		return
@@ -141,7 +141,7 @@ func (h *TransferHandler) Transfer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rawTxBytes, err := core.Codec.EncodeDynamicFeeSigned(tx, sig)
+	rawTxBytes, err := core.RLP.EncodeDynamicFeeSigned(tx, sig)
 	if err != nil {
 		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode signed tx: %s", err))
 		return

@@ -39,7 +39,7 @@ func (h *TransactionHandler) BuildLegacyTransaction(w http.ResponseWriter, r *ht
 		return
 	}
 
-	raw, err := core.Codec.EncodeLegacyUnsigned(req.ToLegacyTx())
+	raw, err := core.RLP.EncodeLegacyUnsigned(req.ToLegacyTx())
 	if err != nil {
 		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode tx: %s", err))
 		return
@@ -70,7 +70,7 @@ func (h *TransactionHandler) BuildDynamicFeeTransaction(w http.ResponseWriter, r
 		return
 	}
 
-	raw, err := core.Codec.EncodeDynamicFeeUnsigned(req.ToDynamicFeeTx())
+	raw, err := core.RLP.EncodeDynamicFeeUnsigned(req.ToDynamicFeeTx())
 	if err != nil {
 		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode tx: %s", err))
 		return
@@ -114,7 +114,7 @@ func (h *TransactionHandler) SignLegacyTransaction(w http.ResponseWriter, r *htt
 		return
 	}
 
-	tx, err := core.Codec.DecodeLegacyUnsigned(req.UnsignedRaw())
+	tx, err := core.RLP.DecodeLegacyUnsigned(req.UnsignedRaw())
 	if err != nil {
 		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("failed to decode unsigned_rlp: %s", err))
 		return
@@ -128,7 +128,7 @@ func (h *TransactionHandler) SignLegacyTransaction(w http.ResponseWriter, r *htt
 		return
 	}
 
-	signedRaw, err := core.Codec.EncodeLegacySigned(tx, sig)
+	signedRaw, err := core.RLP.EncodeLegacySigned(tx, sig)
 	if err != nil {
 		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode signed tx: %s", err))
 		return
@@ -172,7 +172,7 @@ func (h *TransactionHandler) SignDynamicFeeTransaction(w http.ResponseWriter, r 
 		return
 	}
 
-	tx, err := core.Codec.DecodeDynamicFeeUnsigned(req.UnsignedRaw())
+	tx, err := core.RLP.DecodeDynamicFeeUnsigned(req.UnsignedRaw())
 	if err != nil {
 		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("failed to decode unsigned_rlp: %s", err))
 		return
@@ -186,7 +186,7 @@ func (h *TransactionHandler) SignDynamicFeeTransaction(w http.ResponseWriter, r 
 		return
 	}
 
-	signedRaw, err := core.Codec.EncodeDynamicFeeSigned(tx, sig)
+	signedRaw, err := core.RLP.EncodeDynamicFeeSigned(tx, sig)
 	if err != nil {
 		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to encode signed tx: %s", err))
 		return
