@@ -64,7 +64,7 @@ func (k *PublicKey) Bytes() []byte {
 
 func (k *PublicKey) Hex() string {
 	if k.hex == "" {
-		k.hex = hex.EncodeToString(k.Bytes())
+		k.hex = "0x" + hex.EncodeToString(k.Bytes())
 	}
 
 	return k.hex

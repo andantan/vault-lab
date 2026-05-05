@@ -99,7 +99,7 @@ func run() error {
 	gasLimitHex, err := client.EstimateGas(ctx, map[string]string{
 		"from": deployerAddr,
 		"data": "0x" + hex.EncodeToString(bytecode),
-	})
+	}, "latest")
 	if err != nil {
 		return fmt.Errorf("estimate gas: %w", err)
 	}

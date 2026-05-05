@@ -12,12 +12,9 @@ GO_DIR = ipx
 GO_DEPLOYER_BIN = contract_deployer
 GO_SERVER_BIN   = server
 
-EXPLORER_URL ?= http://localhost:3000
-
 .PHONY: help \
 	up down logs reset \
 	geth-logs geth-attach geth-reset \
-	explorer \
 	compile standard-json deploy test \
 	go-build-deployer go-build-server go-build \
 	server go-test swag \
@@ -34,8 +31,6 @@ help:
 	@echo "  make geth-logs       Follow geth logs"
 	@echo "  make geth-attach     Attach to geth IPC console"
 	@echo "  make geth-reset      Remove local geth volume and restart"
-	@echo ""
-	@echo "  make explorer        Print local Blockscout URL"
 	@echo ""
 	@echo "  make compile         Compile Solidity contract (CONTRACT=<path>)"
 	@echo "  make standard-json   Generate standard JSON input (CONTRACT=<path>)"
@@ -74,9 +69,6 @@ geth-reset:
 	$(DOCKER) compose down
 	$(DOCKER) volume rm $(GETH_VOLUME) || true
 	$(DOCKER) compose up -d --wait
-
-explorer:
-	@echo "$(EXPLORER_URL)"
 
 CONTRACT_DIR    = $(shell dirname $(CONTRACT))
 CONTRACT_SUBDIR = $(shell dirname $(CONTRACT) | sed 's|^contracts/||')

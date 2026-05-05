@@ -44,7 +44,7 @@ func (k *PrivateKey) Bytes() []byte {
 
 func (k *PrivateKey) Hex() string {
 	if k.hex == "" {
-		k.hex = hex.EncodeToString(k.Bytes())
+		k.hex = "0x" + hex.EncodeToString(k.Bytes())
 	}
 
 	return k.hex

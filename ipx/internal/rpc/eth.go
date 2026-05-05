@@ -12,6 +12,12 @@ func (c *Client) ChainID(ctx context.Context) (string, error) {
 	return result, err
 }
 
+func (c *Client) GasPrice(ctx context.Context) (string, error) {
+	var result string
+	err := c.Call(ctx, "eth_gasPrice", []any{}, &result)
+	return result, err
+}
+
 func (c *Client) BlockNumber(ctx context.Context) (string, error) {
 	var result string
 	err := c.Call(ctx, "eth_blockNumber", []any{}, &result)
@@ -19,46 +25,30 @@ func (c *Client) BlockNumber(ctx context.Context) (string, error) {
 }
 
 func (c *Client) GetBalance(ctx context.Context, address string, block string) (string, error) {
-	if block == "" {
-		block = "latest"
-	}
-
 	var result string
 	err := c.Call(ctx, "eth_getBalance", []any{address, block}, &result)
 	return result, err
 }
 
 func (c *Client) GetCode(ctx context.Context, address string, block string) (string, error) {
-	if block == "" {
-		block = "latest"
-	}
-
 	var result string
 	err := c.Call(ctx, "eth_getCode", []any{address, block}, &result)
 	return result, err
 }
 
 func (c *Client) CallContract(ctx context.Context, params any, block string) (string, error) {
-	if block == "" {
-		block = "latest"
-	}
-
 	var result string
 	err := c.Call(ctx, "eth_call", []any{params, block}, &result)
 	return result, err
 }
 
-func (c *Client) EstimateGas(ctx context.Context, params any) (string, error) {
+func (c *Client) EstimateGas(ctx context.Context, params any, block string) (string, error) {
 	var result string
-	err := c.Call(ctx, "eth_estimateGas", []any{params}, &result)
+	err := c.Call(ctx, "eth_estimateGas", []any{params, block}, &result)
 	return result, err
 }
 
 func (c *Client) GetTransactionCount(ctx context.Context, address string, block string) (string, error) {
-	if block == "" {
-		block = "pending"
-	}
-
 	var result string
 	err := c.Call(ctx, "eth_getTransactionCount", []any{address, block}, &result)
 	return result, err
@@ -77,11 +67,14 @@ func (c *Client) SendRawTransaction(ctx context.Context, rawTx string) (string, 
 }
 
 func (c *Client) BlockByNumber(ctx context.Context, block string) (map[string]any, error) {
-	if block == "" {
-		block = "latest"
-	}
 	var result map[string]any
 	err := c.Call(ctx, "eth_getBlockByNumber", []any{block, false}, &result)
+	return result, err
+}
+
+func (c *Client) GetTransactionByHash(ctx context.Context, txHash string) (map[string]any, error) {
+	var result map[string]any
+	err := c.Call(ctx, "eth_getTransactionByHash", []any{txHash}, &result)
 	return result, err
 }
 

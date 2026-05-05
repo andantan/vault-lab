@@ -62,3 +62,8 @@ func (a *Address) String() string {
 func (a *Address) Equal(o *Address) bool {
 	return bytes.Equal(a.Bytes(), o.Bytes())
 }
+
+// Checksum returns the EIP-55 mixed-case checksum encoding of the address.
+func (a *Address) Checksum() string {
+	return a.String()
+}

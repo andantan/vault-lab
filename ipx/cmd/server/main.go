@@ -48,6 +48,29 @@ func run() error {
 
 	r.Get("/swagger/*", httpSwagger.WrapHandler)
 
+	r.Route("/evm/rpc", func(r chi.Router) {
+		rpcHandler := v1.NewRPCHandler(client)
+		r.Post("/chain-id", rpcHandler.ChainID)
+		r.Post("/gas-price", rpcHandler.GasPrice)
+		r.Post("/block-number", rpcHandler.BlockNumber)
+		r.Post("/nonce", rpcHandler.Nonce)
+		r.Post("/balance", rpcHandler.Balance)
+		r.Post("/transaction", rpcHandler.Transaction)
+		r.Post("/transaction/receipt", rpcHandler.TransactionReceipt)
+		r.Post("/estimate-gas", rpcHandler.EstimateGas)
+		r.Post("/call", rpcHandler.Call)
+
+		tool := v1.NewToolHandler()
+		r.Post("/tool/address/checksum/eip55", tool.ChecksumEIP55)
+		r.Post("/tool/crypto/derive", tool.DeriveKey)
+	})
+
+	r.Route("/evm/tool", func(r chi.Router) {
+		tool := v1.NewToolHandler()
+		r.Post("/address/checksum/eip55", tool.ChecksumEIP55)
+		r.Post("/crypto/derive", tool.DeriveKey)
+	})
+
 	r.Route("/evm/v1", func(r chi.Router) {
 		hash := v1.NewHashHandler()
 		r.Post("/hash/keccak256/legacy", hash.Keccak256Legacy)

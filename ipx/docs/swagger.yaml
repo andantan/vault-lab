@@ -1,5 +1,34 @@
 basePath: /
 definitions:
+  v1.BalanceRequest:
+    properties:
+      address:
+        example: 0xEbD69375...
+        type: string
+      block:
+        example: latest
+        type: string
+    type: object
+  v1.BalanceResponse:
+    properties:
+      balance:
+        type: string
+      balance_hex:
+        type: string
+      ether:
+        type: string
+      gwei:
+        type: string
+      wei:
+        type: string
+    type: object
+  v1.BlockNumberResponse:
+    properties:
+      block_number:
+        type: integer
+      block_number_hex:
+        type: string
+    type: object
   v1.BuildLegacyNativeTransferRequest:
     properties:
       chain_id:
@@ -31,6 +60,98 @@ definitions:
       unsigned_rlp:
         type: string
     type: object
+  v1.CallRequest:
+    properties:
+      block:
+        example: latest
+        type: string
+      data:
+        example: 0x70a08231...
+        type: string
+      from:
+        example: 0xEbD69375...
+        type: string
+      to:
+        example: 0x8336c196...
+        type: string
+    type: object
+  v1.ChainIDResponse:
+    properties:
+      chain_id:
+        type: integer
+      chain_id_hex:
+        type: string
+    type: object
+  v1.ChecksumEIP55Request:
+    properties:
+      address:
+        example: 0xEbD69375...
+        type: string
+    type: object
+  v1.ChecksumEIP55Response:
+    properties:
+      address:
+        type: string
+    type: object
+  v1.DeriveKeyRequest:
+    properties:
+      private_key:
+        example: 0xea66255f...
+        type: string
+    type: object
+  v1.DeriveKeyResponse:
+    properties:
+      address:
+        type: string
+      private_key:
+        type: string
+      public_key:
+        type: string
+    type: object
+  v1.EstimateGasRequest:
+    properties:
+      block:
+        example: latest
+        type: string
+      data:
+        example: 0x
+        type: string
+      from:
+        example: 0xEbD69375...
+        type: string
+      to:
+        example: 0x8336c196...
+        type: string
+      value:
+        example: "1000000000000000000"
+        type: string
+    type: object
+  v1.EstimateGasResponse:
+    properties:
+      ether:
+        type: string
+      gas_limit:
+        type: integer
+      gas_limit_hex:
+        type: string
+      gwei:
+        type: string
+      wei:
+        type: string
+    type: object
+  v1.GasPriceResponse:
+    properties:
+      ether:
+        type: string
+      gas_price:
+        type: string
+      gas_price_hex:
+        type: string
+      gwei:
+        type: string
+      wei:
+        type: string
+    type: object
   v1.Keccak256LegacyRequest:
     properties:
       message:
@@ -51,6 +172,22 @@ definitions:
   v1.Keccak256PersonalResponse:
     properties:
       digest:
+        type: string
+    type: object
+  v1.NonceRequest:
+    properties:
+      address:
+        example: 0xEbD69375...
+        type: string
+      block:
+        example: pending
+        type: string
+    type: object
+  v1.NonceResponse:
+    properties:
+      nonce:
+        type: integer
+      nonce_hex:
         type: string
     type: object
   v1.SignLegacyNativeTransferRequest:
@@ -81,6 +218,12 @@ definitions:
   v1.SignResponse:
     properties:
       signature:
+        type: string
+    type: object
+  v1.TransactionRequest:
+    properties:
+      tx_hash:
+        example: 0xabc123...
         type: string
     type: object
   v1.VerifyByAddressRequest:
@@ -140,6 +283,330 @@ info:
   title: evmlab API
   version: "1.0"
 paths:
+  /evm/rpc/balance:
+    post:
+      consumes:
+      - application/json
+      description: Returns the balance for the given address at the specified block
+        in decimal and hex
+      parameters:
+      - description: Address and block
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.BalanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.BalanceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get balance for address
+      tags:
+      - rpc
+  /evm/rpc/block-number:
+    post:
+      description: Returns the latest block number in decimal and hex
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.BlockNumberResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get block number
+      tags:
+      - rpc
+  /evm/rpc/call:
+    post:
+      consumes:
+      - application/json
+      description: Executes eth_call and returns the raw result
+      parameters:
+      - description: Call parameters
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CallRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Execute a read-only contract call
+      tags:
+      - rpc
+  /evm/rpc/chain-id:
+    post:
+      description: Returns the chain ID of the connected network as a decimal integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.ChainIDResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get chain ID
+      tags:
+      - rpc
+  /evm/rpc/estimate-gas:
+    post:
+      consumes:
+      - application/json
+      description: Returns the estimated gas limit for the given transaction parameters
+      parameters:
+      - description: Transaction parameters
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.EstimateGasRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.EstimateGasResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Estimate gas for a transaction
+      tags:
+      - rpc
+  /evm/rpc/gas-price:
+    post:
+      description: Returns the current gas price in decimal and hex
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.GasPriceResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get gas price
+      tags:
+      - rpc
+  /evm/rpc/nonce:
+    post:
+      consumes:
+      - application/json
+      description: Returns the pending transaction count (nonce) for the given address
+        as a decimal integer
+      parameters:
+      - description: Address
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.NonceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.NonceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get nonce for address
+      tags:
+      - rpc
+  /evm/rpc/transaction:
+    post:
+      consumes:
+      - application/json
+      description: Returns transaction details for the given tx hash
+      parameters:
+      - description: Transaction hash
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.TransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get transaction by hash
+      tags:
+      - rpc
+  /evm/rpc/transaction/receipt:
+    post:
+      consumes:
+      - application/json
+      description: Returns the transaction receipt for the given tx hash
+      parameters:
+      - description: Transaction hash
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.TransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get transaction receipt by hash
+      tags:
+      - rpc
+  /evm/tool/address/checksum/eip55:
+    post:
+      consumes:
+      - application/json
+      description: Returns the EIP-55 mixed-case checksum encoding for the given address
+      parameters:
+      - description: Address
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.ChecksumEIP55Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.ChecksumEIP55Response'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Convert address to EIP-55 checksum format
+      tags:
+      - tool
+  /evm/tool/crypto/derive:
+    post:
+      consumes:
+      - application/json
+      description: Returns the public key and address derived from the given private
+        key
+      parameters:
+      - description: Private key
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1.DeriveKeyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.DeriveKeyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Derive key set from private key
+      tags:
+      - tool
   /evm/v1/hash/keccak256/legacy:
     post:
       consumes:

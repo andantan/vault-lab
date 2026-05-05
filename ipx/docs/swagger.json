@@ -9,6 +9,496 @@
     "host": "localhost:33152",
     "basePath": "/",
     "paths": {
+        "/evm/rpc/balance": {
+            "post": {
+                "description": "Returns the balance for the given address at the specified block in decimal and hex",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get balance for address",
+                "parameters": [
+                    {
+                        "description": "Address and block",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.BalanceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.BalanceResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/block-number": {
+            "post": {
+                "description": "Returns the latest block number in decimal and hex",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get block number",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.BlockNumberResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/call": {
+            "post": {
+                "description": "Executes eth_call and returns the raw result",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Execute a read-only contract call",
+                "parameters": [
+                    {
+                        "description": "Call parameters",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.CallRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/chain-id": {
+            "post": {
+                "description": "Returns the chain ID of the connected network as a decimal integer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get chain ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ChainIDResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/estimate-gas": {
+            "post": {
+                "description": "Returns the estimated gas limit for the given transaction parameters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Estimate gas for a transaction",
+                "parameters": [
+                    {
+                        "description": "Transaction parameters",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.EstimateGasRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.EstimateGasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/gas-price": {
+            "post": {
+                "description": "Returns the current gas price in decimal and hex",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get gas price",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.GasPriceResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/nonce": {
+            "post": {
+                "description": "Returns the pending transaction count (nonce) for the given address as a decimal integer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get nonce for address",
+                "parameters": [
+                    {
+                        "description": "Address",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.NonceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.NonceResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/transaction": {
+            "post": {
+                "description": "Returns transaction details for the given tx hash",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get transaction by hash",
+                "parameters": [
+                    {
+                        "description": "Transaction hash",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.TransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/rpc/transaction/receipt": {
+            "post": {
+                "description": "Returns the transaction receipt for the given tx hash",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rpc"
+                ],
+                "summary": "Get transaction receipt by hash",
+                "parameters": [
+                    {
+                        "description": "Transaction hash",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.TransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/tool/address/checksum/eip55": {
+            "post": {
+                "description": "Returns the EIP-55 mixed-case checksum encoding for the given address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tool"
+                ],
+                "summary": "Convert address to EIP-55 checksum format",
+                "parameters": [
+                    {
+                        "description": "Address",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.ChecksumEIP55Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ChecksumEIP55Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/tool/crypto/derive": {
+            "post": {
+                "description": "Returns the public key and address derived from the given private key",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tool"
+                ],
+                "summary": "Derive key set from private key",
+                "parameters": [
+                    {
+                        "description": "Private key",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.DeriveKeyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.DeriveKeyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/evm/v1/hash/keccak256/legacy": {
             "post": {
                 "description": "Computes the Keccak256 hash of the given message with no prefix applied (no EIP standard)",
@@ -382,6 +872,50 @@
         }
     },
     "definitions": {
+        "v1.BalanceRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "block": {
+                    "type": "string",
+                    "example": "latest"
+                }
+            }
+        },
+        "v1.BalanceResponse": {
+            "type": "object",
+            "properties": {
+                "balance": {
+                    "type": "string"
+                },
+                "balance_hex": {
+                    "type": "string"
+                },
+                "ether": {
+                    "type": "string"
+                },
+                "gwei": {
+                    "type": "string"
+                },
+                "wei": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.BlockNumberResponse": {
+            "type": "object",
+            "properties": {
+                "block_number": {
+                    "type": "integer"
+                },
+                "block_number_hex": {
+                    "type": "string"
+                }
+            }
+        },
         "v1.BuildLegacyNativeTransferRequest": {
             "type": "object",
             "properties": {
@@ -426,6 +960,143 @@
                 }
             }
         },
+        "v1.CallRequest": {
+            "type": "object",
+            "properties": {
+                "block": {
+                    "type": "string",
+                    "example": "latest"
+                },
+                "data": {
+                    "type": "string",
+                    "example": "0x70a08231..."
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0x8336c196..."
+                }
+            }
+        },
+        "v1.ChainIDResponse": {
+            "type": "object",
+            "properties": {
+                "chain_id": {
+                    "type": "integer"
+                },
+                "chain_id_hex": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.ChecksumEIP55Request": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                }
+            }
+        },
+        "v1.ChecksumEIP55Response": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.DeriveKeyRequest": {
+            "type": "object",
+            "properties": {
+                "private_key": {
+                    "type": "string",
+                    "example": "0xea66255f..."
+                }
+            }
+        },
+        "v1.DeriveKeyResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "private_key": {
+                    "type": "string"
+                },
+                "public_key": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.EstimateGasRequest": {
+            "type": "object",
+            "properties": {
+                "block": {
+                    "type": "string",
+                    "example": "latest"
+                },
+                "data": {
+                    "type": "string",
+                    "example": "0x"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0x8336c196..."
+                },
+                "value": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                }
+            }
+        },
+        "v1.EstimateGasResponse": {
+            "type": "object",
+            "properties": {
+                "ether": {
+                    "type": "string"
+                },
+                "gas_limit": {
+                    "type": "integer"
+                },
+                "gas_limit_hex": {
+                    "type": "string"
+                },
+                "gwei": {
+                    "type": "string"
+                },
+                "wei": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.GasPriceResponse": {
+            "type": "object",
+            "properties": {
+                "ether": {
+                    "type": "string"
+                },
+                "gas_price": {
+                    "type": "string"
+                },
+                "gas_price_hex": {
+                    "type": "string"
+                },
+                "gwei": {
+                    "type": "string"
+                },
+                "wei": {
+                    "type": "string"
+                }
+            }
+        },
         "v1.Keccak256LegacyRequest": {
             "type": "object",
             "properties": {
@@ -456,6 +1127,30 @@
             "type": "object",
             "properties": {
                 "digest": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.NonceRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "0xEbD69375..."
+                },
+                "block": {
+                    "type": "string",
+                    "example": "pending"
+                }
+            }
+        },
+        "v1.NonceResponse": {
+            "type": "object",
+            "properties": {
+                "nonce": {
+                    "type": "integer"
+                },
+                "nonce_hex": {
                     "type": "string"
                 }
             }
@@ -502,6 +1197,15 @@
             "properties": {
                 "signature": {
                     "type": "string"
+                }
+            }
+        },
+        "v1.TransactionRequest": {
+            "type": "object",
+            "properties": {
+                "tx_hash": {
+                    "type": "string",
+                    "example": "0xabc123..."
                 }
             }
         },

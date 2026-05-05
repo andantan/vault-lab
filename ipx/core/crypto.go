@@ -34,6 +34,23 @@ func GenerateKey() (*EVMSecp256k1Key, error) {
 	}, nil
 }
 
+// DeriveKeyFromPrivHex reconstructs an EVMSecp256k1Key from a hex-encoded private key only.
+func DeriveKeyFromPrivHex(privHex string) (*EVMSecp256k1Key, error) {
+	priv, err := crypto.HexToECDSA(strings.TrimPrefix(privHex, "0x"))
+	if err != nil {
+		return nil, err
+	}
+
+	pub := priv.Public().(*ecdsa.PublicKey)
+	addr := crypto.PubkeyToAddress(*pub)
+
+	return &EVMSecp256k1Key{
+		PrivateKey: types.NewPrivateKey(priv),
+		PublicKey:  types.NewPublicKey(pub),
+		Address:    types.NewAddress(addr),
+	}, nil
+}
+
 // DeriveKeyFromHex reconstructs an EVMSecp256k1Key from hex-encoded strings and verifies
 // that the stored public key and address are consistent with the private key.
 func DeriveKeyFromHex(privHex, pubHex, addrHex string) (*EVMSecp256k1Key, error) {
@@ -45,7 +62,7 @@ func DeriveKeyFromHex(privHex, pubHex, addrHex string) (*EVMSecp256k1Key, error)
 	pub := priv.Public().(*ecdsa.PublicKey)
 	addr := crypto.PubkeyToAddress(*pub)
 
-	if types.NewPublicKey(pub).Hex() != strings.TrimPrefix(pubHex, "0x") {
+	if types.NewPublicKey(pub).Hex() != pubHex {
 		return nil, errors.New("stored public key does not match private key")
 	}
 
