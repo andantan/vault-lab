@@ -141,3 +141,135 @@ func NewBuildNativeEIP1559TransactionResponse(unsigned, signed []byte, txHash *t
 		V:           "0x" + sig.V().Text(16),
 	}
 }
+
+type BuildERC20LegacyTransactionRequest struct {
+	From     string `json:"from"     example:"0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"`
+	To       string `json:"to"       example:"0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"`
+	Contract string `json:"contract" example:"0x5FbDB2315678afecb367f032d93F642f64180aa3"`
+	Amount   string `json:"amount"   example:"1000000000000000000"`
+
+	f *types.Address
+	t *types.Address
+	c *types.Address
+	a *big.Int
+}
+
+func (r *BuildERC20LegacyTransactionRequest) ValidateRequest() error {
+	r.From = strings.TrimSpace(r.From)
+	if !common.IsHexAddress(r.From) {
+		return errors.New("from: invalid address")
+	}
+	r.f = types.NewAddress(common.HexToAddress(r.From))
+
+	r.To = strings.TrimSpace(r.To)
+	if !common.IsHexAddress(r.To) {
+		return errors.New("to: invalid address")
+	}
+	r.t = types.NewAddress(common.HexToAddress(r.To))
+
+	r.Contract = strings.TrimSpace(r.Contract)
+	if !common.IsHexAddress(r.Contract) {
+		return errors.New("contract: invalid address")
+	}
+	r.c = types.NewAddress(common.HexToAddress(r.Contract))
+
+	r.Amount = strings.TrimSpace(r.Amount)
+	a, ok := new(big.Int).SetString(r.Amount, 10)
+	if !ok {
+		return errors.New("amount: invalid integer")
+	}
+	r.a = a
+
+	return nil
+}
+
+func (r *BuildERC20LegacyTransactionRequest) FromAddr() *types.Address     { return r.f }
+func (r *BuildERC20LegacyTransactionRequest) ToAddr() *types.Address       { return r.t }
+func (r *BuildERC20LegacyTransactionRequest) ContractAddr() *types.Address { return r.c }
+func (r *BuildERC20LegacyTransactionRequest) ToAmount() *big.Int           { return r.a }
+
+type BuildERC20LegacyTransactionResponse struct {
+	UnsignedRLP string `json:"unsigned_rlp"`
+	SignedRLP   string `json:"signed_rlp"`
+	TxHash      string `json:"tx_hash"`
+	R           string `json:"r"`
+	S           string `json:"s"`
+	V           string `json:"v"`
+}
+
+func NewBuildERC20LegacyTransactionResponse(unsigned, signed []byte, txHash *types.Hash, sig *types.Signature) *BuildERC20LegacyTransactionResponse {
+	return &BuildERC20LegacyTransactionResponse{
+		UnsignedRLP: "0x" + hex.EncodeToString(unsigned),
+		SignedRLP:   "0x" + hex.EncodeToString(signed),
+		TxHash:      txHash.String(),
+		R:           "0x" + sig.R().Text(16),
+		S:           "0x" + sig.S().Text(16),
+		V:           "0x" + sig.V().Text(16),
+	}
+}
+
+type BuildERC20EIP1559TransactionRequest struct {
+	From     string `json:"from"     example:"0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"`
+	To       string `json:"to"       example:"0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"`
+	Contract string `json:"contract" example:"0x5FbDB2315678afecb367f032d93F642f64180aa3"`
+	Amount   string `json:"amount"   example:"1000000000000000000"`
+
+	f *types.Address
+	t *types.Address
+	c *types.Address
+	a *big.Int
+}
+
+func (r *BuildERC20EIP1559TransactionRequest) ValidateRequest() error {
+	r.From = strings.TrimSpace(r.From)
+	if !common.IsHexAddress(r.From) {
+		return errors.New("from: invalid address")
+	}
+	r.f = types.NewAddress(common.HexToAddress(r.From))
+
+	r.To = strings.TrimSpace(r.To)
+	if !common.IsHexAddress(r.To) {
+		return errors.New("to: invalid address")
+	}
+	r.t = types.NewAddress(common.HexToAddress(r.To))
+
+	r.Contract = strings.TrimSpace(r.Contract)
+	if !common.IsHexAddress(r.Contract) {
+		return errors.New("contract: invalid address")
+	}
+	r.c = types.NewAddress(common.HexToAddress(r.Contract))
+
+	r.Amount = strings.TrimSpace(r.Amount)
+	a, ok := new(big.Int).SetString(r.Amount, 10)
+	if !ok {
+		return errors.New("amount: invalid integer")
+	}
+	r.a = a
+
+	return nil
+}
+
+func (r *BuildERC20EIP1559TransactionRequest) FromAddr() *types.Address     { return r.f }
+func (r *BuildERC20EIP1559TransactionRequest) ToAddr() *types.Address       { return r.t }
+func (r *BuildERC20EIP1559TransactionRequest) ContractAddr() *types.Address { return r.c }
+func (r *BuildERC20EIP1559TransactionRequest) ToAmount() *big.Int           { return r.a }
+
+type BuildERC20EIP1559TransactionResponse struct {
+	UnsignedRLP string `json:"unsigned_rlp"`
+	SignedRLP   string `json:"signed_rlp"`
+	TxHash      string `json:"tx_hash"`
+	R           string `json:"r"`
+	S           string `json:"s"`
+	V           string `json:"v"`
+}
+
+func NewBuildERC20EIP1559TransactionResponse(unsigned, signed []byte, txHash *types.Hash, sig *types.Signature) *BuildERC20EIP1559TransactionResponse {
+	return &BuildERC20EIP1559TransactionResponse{
+		UnsignedRLP: "0x" + hex.EncodeToString(unsigned),
+		SignedRLP:   "0x" + hex.EncodeToString(signed),
+		TxHash:      txHash.String(),
+		R:           "0x" + sig.R().Text(16),
+		S:           "0x" + sig.S().Text(16),
+		V:           "0x" + sig.V().Text(16),
+	}
+}

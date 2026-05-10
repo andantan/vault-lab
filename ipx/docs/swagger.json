@@ -224,6 +224,49 @@
                 }
             }
         },
+        "/evm/abi/encode/balance-of": {
+            "post": {
+                "description": "Returns ABI-encoded calldata for balanceOf(address)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "abi"
+                ],
+                "summary": "Build balanceOf calldata",
+                "parameters": [
+                    {
+                        "description": "Account address",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/misc.BalanceOfCalldataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/misc.BalanceOfCalldataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/evm/abi/encode/transfer": {
             "post": {
                 "description": "Returns ABI-encoded calldata for transfer(address,uint256)",
@@ -1629,7 +1672,111 @@
                 }
             }
         },
-        "/evm/v2/transfers/native/eip1559": {
+        "/evm/v2/transaction/erc20/eip1559": {
+            "post": {
+                "description": "Builds transfer(address,uint256) calldata internally and returns the unsigned RLP-encoded EIP-1559 transaction. Gas limit is estimated on-chain with a 20% buffer.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transfer"
+                ],
+                "summary": "Build unsigned ERC-20 EIP-1559 transfer tx",
+                "parameters": [
+                    {
+                        "description": "ERC-20 transfer request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v2.BuildERC20EIP1559TransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v2.BuildERC20EIP1559TransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/v2/transaction/erc20/legacy": {
+            "post": {
+                "description": "Builds transfer(address,uint256) calldata internally and returns the unsigned RLP-encoded EIP-155 legacy transaction. Gas limit is estimated on-chain with a 20% buffer.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transfer"
+                ],
+                "summary": "Build unsigned ERC-20 legacy transfer tx",
+                "parameters": [
+                    {
+                        "description": "ERC-20 transfer request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v2.BuildERC20LegacyTransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v2.BuildERC20LegacyTransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/v2/transaction/native/eip1559": {
             "post": {
                 "description": "Fetches chain state (chainID, nonce, fees) and returns the unsigned RLP-encoded EIP-1559 transfer transaction",
                 "consumes": [
@@ -1681,7 +1828,7 @@
                 }
             }
         },
-        "/evm/v2/transfers/native/legacy": {
+        "/evm/v2/transaction/native/legacy": {
             "post": {
                 "description": "Fetches chain state (chainID, nonce, gas price) and returns the unsigned RLP-encoded EIP-155 legacy transfer transaction",
                 "consumes": [
@@ -1733,7 +1880,111 @@
                 }
             }
         },
-        "/evm/v3/transactions/native/eip1559": {
+        "/evm/v3/transaction/erc20/eip1559": {
+            "post": {
+                "description": "Builds transfer(address,uint256) calldata, estimates gas, signs with the configured key, returns unsigned_rlp, signed_rlp, and tx_hash",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Build and sign ERC-20 EIP-1559 transfer tx",
+                "parameters": [
+                    {
+                        "description": "ERC-20 transfer request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v3.BuildERC20EIP1559TransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v3.BuildERC20EIP1559TransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/v3/transaction/erc20/legacy": {
+            "post": {
+                "description": "Builds transfer(address,uint256) calldata, estimates gas, signs with the configured key, returns unsigned_rlp, signed_rlp, and tx_hash",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Build and sign ERC-20 legacy transfer tx",
+                "parameters": [
+                    {
+                        "description": "ERC-20 transfer request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v3.BuildERC20LegacyTransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v3.BuildERC20LegacyTransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/v3/transaction/native/eip1559": {
             "post": {
                 "description": "Fetches chain state, builds and signs an EIP-1559 native transfer, returns unsigned_rlp, signed_rlp, and tx_hash",
                 "consumes": [
@@ -1785,7 +2036,7 @@
                 }
             }
         },
-        "/evm/v3/transactions/native/legacy": {
+        "/evm/v3/transaction/native/legacy": {
             "post": {
                 "description": "Fetches chain state, builds and signs an EIP-155 legacy native transfer, returns unsigned_rlp, signed_rlp, and tx_hash",
                 "consumes": [
@@ -1814,6 +2065,110 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/v3.BuildNativeLegacyTransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/v4/transaction/erc20/eip1559": {
+            "post": {
+                "description": "Builds transfer(address,uint256) calldata, estimates gas, signs with the configured key, broadcasts, and returns unsigned_rlp, signed_rlp, tx_hash, r, s, v",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Build, sign, and send ERC-20 EIP-1559 transfer tx",
+                "parameters": [
+                    {
+                        "description": "ERC-20 transfer request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v4.BuildERC20EIP1559TransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v4.BuildERC20EIP1559TransactionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Bad Gateway",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/v4/transaction/erc20/legacy": {
+            "post": {
+                "description": "Builds transfer(address,uint256) calldata, estimates gas, signs with the configured key, broadcasts, and returns unsigned_rlp, signed_rlp, tx_hash, r, s, v",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Build, sign, and send ERC-20 legacy transfer tx",
+                "parameters": [
+                    {
+                        "description": "ERC-20 transfer request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v4.BuildERC20LegacyTransactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v4.BuildERC20LegacyTransactionResponse"
                         }
                     },
                     "400": {
@@ -1978,6 +2333,23 @@
             }
         },
         "misc.ApproveCalldataResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                }
+            }
+        },
+        "misc.BalanceOfCalldataRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "misc.BalanceOfCalldataResponse": {
             "type": "object",
             "properties": {
                 "data": {
@@ -2826,6 +3198,64 @@
                 }
             }
         },
+        "v2.BuildERC20EIP1559TransactionRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "contract": {
+                    "type": "string",
+                    "example": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "v2.BuildERC20EIP1559TransactionResponse": {
+            "type": "object",
+            "properties": {
+                "unsigned_rlp": {
+                    "type": "string"
+                }
+            }
+        },
+        "v2.BuildERC20LegacyTransactionRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "contract": {
+                    "type": "string",
+                    "example": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "v2.BuildERC20LegacyTransactionResponse": {
+            "type": "object",
+            "properties": {
+                "unsigned_rlp": {
+                    "type": "string"
+                }
+            }
+        },
         "v2.BuildNativeEIP1559TransactionRequest": {
             "type": "object",
             "properties": {
@@ -2866,6 +3296,94 @@
             "type": "object",
             "properties": {
                 "unsigned_rlp": {
+                    "type": "string"
+                }
+            }
+        },
+        "v3.BuildERC20EIP1559TransactionRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "contract": {
+                    "type": "string",
+                    "example": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "v3.BuildERC20EIP1559TransactionResponse": {
+            "type": "object",
+            "properties": {
+                "r": {
+                    "type": "string"
+                },
+                "s": {
+                    "type": "string"
+                },
+                "signed_rlp": {
+                    "type": "string"
+                },
+                "tx_hash": {
+                    "type": "string"
+                },
+                "unsigned_rlp": {
+                    "type": "string"
+                },
+                "v": {
+                    "type": "string"
+                }
+            }
+        },
+        "v3.BuildERC20LegacyTransactionRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "contract": {
+                    "type": "string",
+                    "example": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "v3.BuildERC20LegacyTransactionResponse": {
+            "type": "object",
+            "properties": {
+                "r": {
+                    "type": "string"
+                },
+                "s": {
+                    "type": "string"
+                },
+                "signed_rlp": {
+                    "type": "string"
+                },
+                "tx_hash": {
+                    "type": "string"
+                },
+                "unsigned_rlp": {
+                    "type": "string"
+                },
+                "v": {
                     "type": "string"
                 }
             }
@@ -2924,6 +3442,94 @@
             }
         },
         "v3.BuildNativeLegacyTransactionResponse": {
+            "type": "object",
+            "properties": {
+                "r": {
+                    "type": "string"
+                },
+                "s": {
+                    "type": "string"
+                },
+                "signed_rlp": {
+                    "type": "string"
+                },
+                "tx_hash": {
+                    "type": "string"
+                },
+                "unsigned_rlp": {
+                    "type": "string"
+                },
+                "v": {
+                    "type": "string"
+                }
+            }
+        },
+        "v4.BuildERC20EIP1559TransactionRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "contract": {
+                    "type": "string",
+                    "example": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "v4.BuildERC20EIP1559TransactionResponse": {
+            "type": "object",
+            "properties": {
+                "r": {
+                    "type": "string"
+                },
+                "s": {
+                    "type": "string"
+                },
+                "signed_rlp": {
+                    "type": "string"
+                },
+                "tx_hash": {
+                    "type": "string"
+                },
+                "unsigned_rlp": {
+                    "type": "string"
+                },
+                "v": {
+                    "type": "string"
+                }
+            }
+        },
+        "v4.BuildERC20LegacyTransactionRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "contract": {
+                    "type": "string",
+                    "example": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "v4.BuildERC20LegacyTransactionResponse": {
             "type": "object",
             "properties": {
                 "r": {

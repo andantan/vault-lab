@@ -12,6 +12,14 @@ const (
 	addressSize  = 20
 )
 
+// BalanceOfCalldata builds calldata for balanceOf(address).
+func BalanceOfCalldata(account *types.Address) []byte {
+	data := make([]byte, selectorSize+wordSize)
+	copy(data[:selectorSize], types.BalanceOfSelector)
+	copy(data[selectorSize+wordSize-addressSize:selectorSize+wordSize], account.Bytes())
+	return data
+}
+
 // ApproveCalldata builds calldata for approve(address,uint256).
 func ApproveCalldata(spender *types.Address, amount *big.Int) []byte {
 	data := make([]byte, selectorSize+wordSize+wordSize)

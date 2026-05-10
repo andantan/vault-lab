@@ -152,6 +152,31 @@ func (h *ABIHandler) DecodeCall(w http.ResponseWriter, r *http.Request) {
 	handler.WriteJSON(w, http.StatusOK, NewDecodeCallResponse(data, values))
 }
 
+// BalanceOfCalldata godoc
+// @Summary      Build balanceOf calldata
+// @Description  Returns ABI-encoded calldata for balanceOf(address)
+// @Tags         abi
+// @Accept       json
+// @Produce      json
+// @Param        body  body      BalanceOfCalldataRequest   true  "Account address"
+// @Success      200   {object}  BalanceOfCalldataResponse
+// @Failure      400   {object}  map[string]string
+// @Router       /evm/abi/encode/balance-of [post]
+func (h *ABIHandler) BalanceOfCalldata(w http.ResponseWriter, r *http.Request) {
+	req := new(BalanceOfCalldataRequest)
+	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("invalid request body: %s", err))
+		return
+	}
+	if err := req.ValidateRequest(); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	data := core.BalanceOfCalldata(req.ToAccount())
+	handler.WriteJSON(w, http.StatusOK, NewBalanceOfCalldataResponse(data))
+}
+
 // ApproveCalldata godoc
 // @Summary      Build approve calldata
 // @Description  Returns ABI-encoded calldata for approve(address,uint256)

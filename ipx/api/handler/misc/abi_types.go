@@ -222,6 +222,33 @@ func NewAllowanceCalldataResponse(data []byte) *AllowanceCalldataResponse {
 	}
 }
 
+type BalanceOfCalldataRequest struct {
+	Account string `json:"account" example:"0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"`
+
+	a *types.Address
+}
+
+func (r *BalanceOfCalldataRequest) ValidateRequest() error {
+	r.Account = strings.TrimSpace(r.Account)
+	if !common.IsHexAddress(r.Account) {
+		return errors.New("account: invalid address")
+	}
+	r.a = types.NewAddress(common.HexToAddress(r.Account))
+	return nil
+}
+
+func (r *BalanceOfCalldataRequest) ToAccount() *types.Address { return r.a }
+
+type BalanceOfCalldataResponse struct {
+	Data string `json:"data"`
+}
+
+func NewBalanceOfCalldataResponse(data []byte) *BalanceOfCalldataResponse {
+	return &BalanceOfCalldataResponse{
+		Data: "0x" + hex.EncodeToString(data),
+	}
+}
+
 type TransferFromCalldataRequest struct {
 	From   string `json:"from"   example:"0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"`
 	To     string `json:"to"     example:"0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"`

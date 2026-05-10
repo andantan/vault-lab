@@ -76,6 +76,7 @@ func run() error {
 		r.Post("/decode/result", abi.DecodeResult)
 		r.Post("/decode/call", abi.DecodeCall)
 		r.Post("/encode", abi.Encode)
+		r.Post("/encode/balance-of", abi.BalanceOfCalldata)
 		r.Post("/encode/approve", abi.ApproveCalldata)
 		r.Post("/encode/transfer", abi.TransferCalldata)
 		r.Post("/encode/allowance", abi.AllowanceCalldata)
@@ -116,18 +117,24 @@ func run() error {
 		transfer := v2.NewTransactionHandler(client)
 		r.Post("/transaction/native/legacy", transfer.BuildNativeLegacyTransaction)
 		r.Post("/transaction/native/eip1559", transfer.BuildNativeEIP1559Transaction)
+		r.Post("/transaction/erc20/legacy", transfer.BuildERC20LegacyTransaction)
+		r.Post("/transaction/erc20/eip1559", transfer.BuildERC20EIP1559Transaction)
 	})
 
 	r.Route("/evm/v3", func(r chi.Router) {
 		tx := v3.NewTransactionHandler(cfg, client)
 		r.Post("/transaction/native/legacy", tx.BuildNativeLegacyTransaction)
 		r.Post("/transaction/native/eip1559", tx.BuildNativeEIP1559Transaction)
+		r.Post("/transaction/erc20/legacy", tx.BuildERC20LegacyTransaction)
+		r.Post("/transaction/erc20/eip1559", tx.BuildERC20EIP1559Transaction)
 	})
 
 	r.Route("/evm/v4", func(r chi.Router) {
 		tx := v4.NewTransactionHandler(cfg, client)
 		r.Post("/transaction/native/legacy", tx.BuildNativeLegacyTransaction)
 		r.Post("/transaction/native/eip1559", tx.BuildNativeEIP1559Transaction)
+		r.Post("/transaction/erc20/legacy", tx.BuildERC20LegacyTransaction)
+		r.Post("/transaction/erc20/eip1559", tx.BuildERC20EIP1559Transaction)
 	})
 
 	fmt.Println("Listening on", cfg.ServerAddr)

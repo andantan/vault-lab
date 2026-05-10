@@ -1,6 +1,7 @@
 package types
 
 var (
+	BalanceOfSelector    = []byte{0x70, 0xa0, 0x82, 0x31} // balanceOf(address)
 	ApproveSelector      = []byte{0x09, 0x5e, 0xa7, 0xb3} // approve(address,uint256)
 	TransferSelector     = []byte{0xa9, 0x05, 0x9c, 0xbb} // transfer(address,uint256)
 	AllowanceSelector    = []byte{0xdd, 0x62, 0xed, 0x3e} // allowance(address,address)
