@@ -1,5 +1,44 @@
 basePath: /
 definitions:
+  contract.AllowanceCalldataRequest:
+    properties:
+      owner:
+        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
+        type: string
+      spender:
+        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
+        type: string
+    type: object
+  contract.AllowanceCalldataResponse:
+    properties:
+      data:
+        type: string
+    type: object
+  contract.ApproveCalldataRequest:
+    properties:
+      amount:
+        example: "1000000000000000000"
+        type: string
+      spender:
+        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
+        type: string
+    type: object
+  contract.ApproveCalldataResponse:
+    properties:
+      data:
+        type: string
+    type: object
+  contract.BalanceOfCalldataRequest:
+    properties:
+      account:
+        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
+        type: string
+    type: object
+  contract.BalanceOfCalldataResponse:
+    properties:
+      data:
+        type: string
+    type: object
   contract.EIP712DomainRequest:
     properties:
       block:
@@ -111,42 +150,36 @@ definitions:
         type: string
       symbol:
         type: string
-    type: object
-  misc.AllowanceCalldataRequest:
-    properties:
-      owner:
-        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
-        type: string
-      spender:
-        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
+      total_supply:
         type: string
     type: object
-  misc.AllowanceCalldataResponse:
-    properties:
-      data:
-        type: string
-    type: object
-  misc.ApproveCalldataRequest:
+  contract.TransferCalldataRequest:
     properties:
       amount:
         example: "1000000000000000000"
         type: string
-      spender:
+      to:
         example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
         type: string
     type: object
-  misc.ApproveCalldataResponse:
+  contract.TransferCalldataResponse:
     properties:
       data:
         type: string
     type: object
-  misc.BalanceOfCalldataRequest:
+  contract.TransferFromCalldataRequest:
     properties:
-      account:
+      amount:
+        example: "1000000000000000000"
+        type: string
+      from:
+        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
+        type: string
+      to:
         example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
         type: string
     type: object
-  misc.BalanceOfCalldataResponse:
+  contract.TransferFromCalldataResponse:
     properties:
       data:
         type: string
@@ -450,11 +483,6 @@ definitions:
       wei:
         type: string
     type: object
-  misc.NameCalldataResponse:
-    properties:
-      data:
-        type: string
-    type: object
   misc.NonceRequest:
     properties:
       address:
@@ -575,37 +603,6 @@ definitions:
         example: 0xabc123...
         type: string
     type: object
-  misc.TransferCalldataRequest:
-    properties:
-      amount:
-        example: "1000000000000000000"
-        type: string
-      to:
-        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
-        type: string
-    type: object
-  misc.TransferCalldataResponse:
-    properties:
-      data:
-        type: string
-    type: object
-  misc.TransferFromCalldataRequest:
-    properties:
-      amount:
-        example: "1000000000000000000"
-        type: string
-      from:
-        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
-        type: string
-      to:
-        example: 0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3
-        type: string
-    type: object
-  misc.TransferFromCalldataResponse:
-    properties:
-      data:
-        type: string
-    type: object
   misc.UnitConvertRequest:
     properties:
       amount:
@@ -658,11 +655,6 @@ definitions:
     properties:
       result:
         type: boolean
-    type: object
-  misc.VersionCalldataResponse:
-    properties:
-      data:
-        type: string
     type: object
   v1.BuildEIP1559TransactionRequest:
     properties:
@@ -1113,90 +1105,6 @@ paths:
       summary: ABI-encode a function call
       tags:
       - abi
-  /evm/abi/encode/allowance:
-    post:
-      consumes:
-      - application/json
-      description: Returns ABI-encoded calldata for allowance(address,address)
-      parameters:
-      - description: Owner and spender addresses
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/misc.AllowanceCalldataRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/misc.AllowanceCalldataResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Build allowance calldata
-      tags:
-      - abi
-  /evm/abi/encode/approve:
-    post:
-      consumes:
-      - application/json
-      description: Returns ABI-encoded calldata for approve(address,uint256)
-      parameters:
-      - description: Spender address and amount
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/misc.ApproveCalldataRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/misc.ApproveCalldataResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Build approve calldata
-      tags:
-      - abi
-  /evm/abi/encode/balance-of:
-    post:
-      consumes:
-      - application/json
-      description: Returns ABI-encoded calldata for balanceOf(address)
-      parameters:
-      - description: Account address
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/misc.BalanceOfCalldataRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/misc.BalanceOfCalldataResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Build balanceOf calldata
-      tags:
-      - abi
   /evm/abi/encode/eip712-domain:
     post:
       description: Returns ABI-encoded calldata for eip712Domain()
@@ -1208,88 +1116,6 @@ paths:
           schema:
             $ref: '#/definitions/misc.EIP712DomainCalldataResponse'
       summary: Build eip712Domain calldata
-      tags:
-      - abi
-  /evm/abi/encode/name:
-    post:
-      description: Returns ABI-encoded calldata for name()
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/misc.NameCalldataResponse'
-      summary: Build name calldata
-      tags:
-      - abi
-  /evm/abi/encode/transfer:
-    post:
-      consumes:
-      - application/json
-      description: Returns ABI-encoded calldata for transfer(address,uint256)
-      parameters:
-      - description: Recipient address and amount
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/misc.TransferCalldataRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/misc.TransferCalldataResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Build transfer calldata
-      tags:
-      - abi
-  /evm/abi/encode/transfer-from:
-    post:
-      consumes:
-      - application/json
-      description: Returns ABI-encoded calldata for transferFrom(address,address,uint256)
-      parameters:
-      - description: From, to addresses and amount
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/misc.TransferFromCalldataRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/misc.TransferFromCalldataResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Build transferFrom calldata
-      tags:
-      - abi
-  /evm/abi/encode/version:
-    post:
-      description: Returns ABI-encoded calldata for version()
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/misc.VersionCalldataResponse'
-      summary: Build version calldata
       tags:
       - abi
   /evm/abi/selector:
@@ -1491,6 +1317,146 @@ paths:
               type: string
             type: object
       summary: Fetch ERC-20 token balance
+      tags:
+      - contract
+  /evm/contract/erc20/calldata/allowance:
+    post:
+      consumes:
+      - application/json
+      description: Returns ABI-encoded calldata for allowance(address,address)
+      parameters:
+      - description: Owner and spender addresses
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.AllowanceCalldataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contract.AllowanceCalldataResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Build allowance calldata
+      tags:
+      - contract
+  /evm/contract/erc20/calldata/approve:
+    post:
+      consumes:
+      - application/json
+      description: Returns ABI-encoded calldata for approve(address,uint256)
+      parameters:
+      - description: Spender address and amount
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.ApproveCalldataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contract.ApproveCalldataResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Build approve calldata
+      tags:
+      - contract
+  /evm/contract/erc20/calldata/balance-of:
+    post:
+      consumes:
+      - application/json
+      description: Returns ABI-encoded calldata for balanceOf(address)
+      parameters:
+      - description: Account address
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.BalanceOfCalldataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contract.BalanceOfCalldataResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Build balanceOf calldata
+      tags:
+      - contract
+  /evm/contract/erc20/calldata/transfer:
+    post:
+      consumes:
+      - application/json
+      description: Returns ABI-encoded calldata for transfer(address,uint256)
+      parameters:
+      - description: Recipient address and amount
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.TransferCalldataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contract.TransferCalldataResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Build transfer calldata
+      tags:
+      - contract
+  /evm/contract/erc20/calldata/transfer-from:
+    post:
+      consumes:
+      - application/json
+      description: Returns ABI-encoded calldata for transferFrom(address,address,uint256)
+      parameters:
+      - description: From, to addresses and amount
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.TransferFromCalldataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contract.TransferFromCalldataResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Build transferFrom calldata
       tags:
       - contract
   /evm/contract/erc20/metadata:

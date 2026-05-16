@@ -77,6 +77,13 @@ func DecimalsCalldata() []byte {
 	return data
 }
 
+// TotalSupplyCalldata builds calldata for totalSupply().
+func TotalSupplyCalldata() []byte {
+	data := make([]byte, 4)
+	copy(data, types.TotalSupplySelector)
+	return data
+}
+
 // NoncesCalldata builds calldata for nonces(address).
 func NoncesCalldata(owner *types.Address) []byte {
 	data := make([]byte, 36)

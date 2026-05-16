@@ -77,14 +77,7 @@ func run() error {
 		r.Post("/decode/result", abi.DecodeResult)
 		r.Post("/decode/call", abi.DecodeCall)
 		r.Post("/encode", abi.Encode)
-		r.Post("/encode/balance-of", abi.BalanceOfCalldata)
-		r.Post("/encode/approve", abi.ApproveCalldata)
-		r.Post("/encode/transfer", abi.TransferCalldata)
-		r.Post("/encode/allowance", abi.AllowanceCalldata)
-		r.Post("/encode/transfer-from", abi.TransferFromCalldata)
 		r.Post("/encode/eip712-domain", abi.EIP712DomainCalldata)
-		r.Post("/encode/name", abi.NameCalldata)
-		r.Post("/encode/version", abi.VersionCalldata)
 	})
 
 	r.Route("/evm/tool", func(r chi.Router) {
@@ -121,6 +114,11 @@ func run() error {
 		r.Post("/erc20/balance", erc20.Balance)
 		r.Post("/erc20/allowance", erc20.Allowance)
 		r.Post("/erc20/approved", erc20.Approved)
+		r.Post("/erc20/calldata/balance-of", erc20.BalanceOfCalldata)
+		r.Post("/erc20/calldata/approve", erc20.ApproveCalldata)
+		r.Post("/erc20/calldata/transfer", erc20.TransferCalldata)
+		r.Post("/erc20/calldata/allowance", erc20.AllowanceCalldata)
+		r.Post("/erc20/calldata/transfer-from", erc20.TransferFromCalldata)
 	})
 
 	r.Route("/evm/v1", func(r chi.Router) {

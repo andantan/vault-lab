@@ -138,135 +138,6 @@
                 }
             }
         },
-        "/evm/abi/encode/allowance": {
-            "post": {
-                "description": "Returns ABI-encoded calldata for allowance(address,address)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "abi"
-                ],
-                "summary": "Build allowance calldata",
-                "parameters": [
-                    {
-                        "description": "Owner and spender addresses",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/misc.AllowanceCalldataRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/misc.AllowanceCalldataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/evm/abi/encode/approve": {
-            "post": {
-                "description": "Returns ABI-encoded calldata for approve(address,uint256)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "abi"
-                ],
-                "summary": "Build approve calldata",
-                "parameters": [
-                    {
-                        "description": "Spender address and amount",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/misc.ApproveCalldataRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/misc.ApproveCalldataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/evm/abi/encode/balance-of": {
-            "post": {
-                "description": "Returns ABI-encoded calldata for balanceOf(address)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "abi"
-                ],
-                "summary": "Build balanceOf calldata",
-                "parameters": [
-                    {
-                        "description": "Account address",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/misc.BalanceOfCalldataRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/misc.BalanceOfCalldataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/evm/abi/encode/eip712-domain": {
             "post": {
                 "description": "Returns ABI-encoded calldata for eip712Domain()",
@@ -282,132 +153,6 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/misc.EIP712DomainCalldataResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/evm/abi/encode/name": {
-            "post": {
-                "description": "Returns ABI-encoded calldata for name()",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "abi"
-                ],
-                "summary": "Build name calldata",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/misc.NameCalldataResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/evm/abi/encode/transfer": {
-            "post": {
-                "description": "Returns ABI-encoded calldata for transfer(address,uint256)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "abi"
-                ],
-                "summary": "Build transfer calldata",
-                "parameters": [
-                    {
-                        "description": "Recipient address and amount",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/misc.TransferCalldataRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/misc.TransferCalldataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/evm/abi/encode/transfer-from": {
-            "post": {
-                "description": "Returns ABI-encoded calldata for transferFrom(address,address,uint256)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "abi"
-                ],
-                "summary": "Build transferFrom calldata",
-                "parameters": [
-                    {
-                        "description": "From, to addresses and amount",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/misc.TransferFromCalldataRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/misc.TransferFromCalldataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/evm/abi/encode/version": {
-            "post": {
-                "description": "Returns ABI-encoded calldata for version()",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "abi"
-                ],
-                "summary": "Build version calldata",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/misc.VersionCalldataResponse"
                         }
                     }
                 }
@@ -706,6 +451,221 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/contract/erc20/calldata/allowance": {
+            "post": {
+                "description": "Returns ABI-encoded calldata for allowance(address,address)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "summary": "Build allowance calldata",
+                "parameters": [
+                    {
+                        "description": "Owner and spender addresses",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/contract.AllowanceCalldataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contract.AllowanceCalldataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/contract/erc20/calldata/approve": {
+            "post": {
+                "description": "Returns ABI-encoded calldata for approve(address,uint256)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "summary": "Build approve calldata",
+                "parameters": [
+                    {
+                        "description": "Spender address and amount",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/contract.ApproveCalldataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contract.ApproveCalldataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/contract/erc20/calldata/balance-of": {
+            "post": {
+                "description": "Returns ABI-encoded calldata for balanceOf(address)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "summary": "Build balanceOf calldata",
+                "parameters": [
+                    {
+                        "description": "Account address",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/contract.BalanceOfCalldataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contract.BalanceOfCalldataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/contract/erc20/calldata/transfer": {
+            "post": {
+                "description": "Returns ABI-encoded calldata for transfer(address,uint256)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "summary": "Build transfer calldata",
+                "parameters": [
+                    {
+                        "description": "Recipient address and amount",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/contract.TransferCalldataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contract.TransferCalldataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evm/contract/erc20/calldata/transfer-from": {
+            "post": {
+                "description": "Returns ABI-encoded calldata for transferFrom(address,address,uint256)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "summary": "Build transferFrom calldata",
+                "parameters": [
+                    {
+                        "description": "From, to addresses and amount",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/contract.TransferFromCalldataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contract.TransferFromCalldataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -2670,6 +2630,65 @@
         }
     },
     "definitions": {
+        "contract.AllowanceCalldataRequest": {
+            "type": "object",
+            "properties": {
+                "owner": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "spender": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "contract.AllowanceCalldataResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.ApproveCalldataRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "spender": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "contract.ApproveCalldataResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                }
+            }
+        },
+        "contract.BalanceOfCalldataRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                }
+            }
+        },
+        "contract.BalanceOfCalldataResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                }
+            }
+        },
         "contract.EIP2612NoncesRequest": {
             "type": "object",
             "properties": {
@@ -2832,44 +2851,26 @@
                 },
                 "symbol": {
                     "type": "string"
-                }
-            }
-        },
-        "misc.AllowanceCalldataRequest": {
-            "type": "object",
-            "properties": {
-                "owner": {
-                    "type": "string",
-                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
                 },
-                "spender": {
-                    "type": "string",
-                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
-                }
-            }
-        },
-        "misc.AllowanceCalldataResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
+                "total_supply": {
                     "type": "string"
                 }
             }
         },
-        "misc.ApproveCalldataRequest": {
+        "contract.TransferCalldataRequest": {
             "type": "object",
             "properties": {
                 "amount": {
                     "type": "string",
                     "example": "1000000000000000000"
                 },
-                "spender": {
+                "to": {
                     "type": "string",
                     "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
                 }
             }
         },
-        "misc.ApproveCalldataResponse": {
+        "contract.TransferCalldataResponse": {
             "type": "object",
             "properties": {
                 "data": {
@@ -2877,16 +2878,24 @@
                 }
             }
         },
-        "misc.BalanceOfCalldataRequest": {
+        "contract.TransferFromCalldataRequest": {
             "type": "object",
             "properties": {
-                "account": {
+                "amount": {
+                    "type": "string",
+                    "example": "1000000000000000000"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
+                },
+                "to": {
                     "type": "string",
                     "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
                 }
             }
         },
-        "misc.BalanceOfCalldataResponse": {
+        "contract.TransferFromCalldataResponse": {
             "type": "object",
             "properties": {
                 "data": {
@@ -3346,14 +3355,6 @@
                 }
             }
         },
-        "misc.NameCalldataResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "string"
-                }
-            }
-        },
         "misc.NonceRequest": {
             "type": "object",
             "properties": {
@@ -3535,52 +3536,6 @@
                 }
             }
         },
-        "misc.TransferCalldataRequest": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "string",
-                    "example": "1000000000000000000"
-                },
-                "to": {
-                    "type": "string",
-                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
-                }
-            }
-        },
-        "misc.TransferCalldataResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "string"
-                }
-            }
-        },
-        "misc.TransferFromCalldataRequest": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "string",
-                    "example": "1000000000000000000"
-                },
-                "from": {
-                    "type": "string",
-                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
-                },
-                "to": {
-                    "type": "string",
-                    "example": "0xDa70aA79f1a329719b9cf9d334b0a82b1d5269f3"
-                }
-            }
-        },
-        "misc.TransferFromCalldataResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "string"
-                }
-            }
-        },
         "misc.UnitConvertRequest": {
             "type": "object",
             "properties": {
@@ -3656,14 +3611,6 @@
             "properties": {
                 "result": {
                     "type": "boolean"
-                }
-            }
-        },
-        "misc.VersionCalldataResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "string"
                 }
             }
         },

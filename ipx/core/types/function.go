@@ -12,6 +12,7 @@ var (
 	VersionSelector      = []byte{0x54, 0xfd, 0x4d, 0x50} // version()
 	SymbolSelector       = []byte{0x95, 0xd8, 0x9b, 0x41} // symbol()
 	DecimalsSelector     = []byte{0x31, 0x3c, 0xe5, 0x67} // decimals()
+	TotalSupplySelector  = []byte{0x18, 0x16, 0x0d, 0xdd} // totalSupply()
 )
 
 // Parameter represents a single ABI function parameter with its name and type.

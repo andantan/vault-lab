@@ -104,7 +104,22 @@ func (h *ERC20Handler) Metadata(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	handler.WriteJSON(w, http.StatusOK, NewERC20MetadataResponse(name, symbol, decimals))
+	p["data"] = "0x" + hex.EncodeToString(core.TotalSupplyCalldata())
+	if raw, err = h.client.CallContract(r.Context(), p, req.Block); err != nil {
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("eth_call totalSupply() failed: %s", err))
+		return
+	}
+	if data, err = util.ParseHex(raw); err != nil {
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to parse hex response: %s", err))
+		return
+	}
+	totalSupply, err := core.ABI.DecodeUint256(data)
+	if err != nil {
+		handler.WriteError(w, http.StatusInternalServerError, fmt.Sprintf("failed to decode totalSupply: %s", err))
+		return
+	}
+
+	handler.WriteJSON(w, http.StatusOK, NewERC20MetadataResponse(name, symbol, totalSupply.String(), decimals))
 }
 
 // Balance godoc
@@ -307,4 +322,129 @@ func (h *ERC20Handler) Approved(w http.ResponseWriter, r *http.Request) {
 	}
 
 	handler.WriteJSON(w, http.StatusOK, NewERC20ApproveResponse(approved))
+}
+
+// BalanceOfCalldata godoc
+// @Summary      Build balanceOf calldata
+// @Description  Returns ABI-encoded calldata for balanceOf(address)
+// @Tags         contract
+// @Accept       json
+// @Produce      json
+// @Param        body  body      BalanceOfCalldataRequest   true  "Account address"
+// @Success      200   {object}  BalanceOfCalldataResponse
+// @Failure      400   {object}  map[string]string
+// @Router       /evm/contract/erc20/calldata/balance-of [post]
+func (h *ERC20Handler) BalanceOfCalldata(w http.ResponseWriter, r *http.Request) {
+	req := new(BalanceOfCalldataRequest)
+	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("invalid request body: %s", err))
+		return
+	}
+	if err := req.ValidateRequest(); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	data := core.BalanceOfCalldata(req.ToAccount())
+	handler.WriteJSON(w, http.StatusOK, NewBalanceOfCalldataResponse(data))
+}
+
+// ApproveCalldata godoc
+// @Summary      Build approve calldata
+// @Description  Returns ABI-encoded calldata for approve(address,uint256)
+// @Tags         contract
+// @Accept       json
+// @Produce      json
+// @Param        body  body      ApproveCalldataRequest   true  "Spender address and amount"
+// @Success      200   {object}  ApproveCalldataResponse
+// @Failure      400   {object}  map[string]string
+// @Router       /evm/contract/erc20/calldata/approve [post]
+func (h *ERC20Handler) ApproveCalldata(w http.ResponseWriter, r *http.Request) {
+	req := new(ApproveCalldataRequest)
+	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("invalid request body: %s", err))
+		return
+	}
+	if err := req.ValidateRequest(); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	data := core.ApproveCalldata(req.ToSpender(), req.ToAmount())
+	handler.WriteJSON(w, http.StatusOK, NewApproveCalldataResponse(data))
+}
+
+// TransferCalldata godoc
+// @Summary      Build transfer calldata
+// @Description  Returns ABI-encoded calldata for transfer(address,uint256)
+// @Tags         contract
+// @Accept       json
+// @Produce      json
+// @Param        body  body      TransferCalldataRequest   true  "Recipient address and amount"
+// @Success      200   {object}  TransferCalldataResponse
+// @Failure      400   {object}  map[string]string
+// @Router       /evm/contract/erc20/calldata/transfer [post]
+func (h *ERC20Handler) TransferCalldata(w http.ResponseWriter, r *http.Request) {
+	req := new(TransferCalldataRequest)
+	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("invalid request body: %s", err))
+		return
+	}
+	if err := req.ValidateRequest(); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	data := core.TransferCalldata(req.ToAddress(), req.ToAmount())
+	handler.WriteJSON(w, http.StatusOK, NewTransferCalldataResponse(data))
+}
+
+// AllowanceCalldata godoc
+// @Summary      Build allowance calldata
+// @Description  Returns ABI-encoded calldata for allowance(address,address)
+// @Tags         contract
+// @Accept       json
+// @Produce      json
+// @Param        body  body      AllowanceCalldataRequest   true  "Owner and spender addresses"
+// @Success      200   {object}  AllowanceCalldataResponse
+// @Failure      400   {object}  map[string]string
+// @Router       /evm/contract/erc20/calldata/allowance [post]
+func (h *ERC20Handler) AllowanceCalldata(w http.ResponseWriter, r *http.Request) {
+	req := new(AllowanceCalldataRequest)
+	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("invalid request body: %s", err))
+		return
+	}
+	if err := req.ValidateRequest(); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	data := core.AllowanceCalldata(req.ToOwner(), req.ToSpender())
+	handler.WriteJSON(w, http.StatusOK, NewAllowanceCalldataResponse(data))
+}
+
+// TransferFromCalldata godoc
+// @Summary      Build transferFrom calldata
+// @Description  Returns ABI-encoded calldata for transferFrom(address,address,uint256)
+// @Tags         contract
+// @Accept       json
+// @Produce      json
+// @Param        body  body      TransferFromCalldataRequest   true  "From, to addresses and amount"
+// @Success      200   {object}  TransferFromCalldataResponse
+// @Failure      400   {object}  map[string]string
+// @Router       /evm/contract/erc20/calldata/transfer-from [post]
+func (h *ERC20Handler) TransferFromCalldata(w http.ResponseWriter, r *http.Request) {
+	req := new(TransferFromCalldataRequest)
+	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, fmt.Sprintf("invalid request body: %s", err))
+		return
+	}
+	if err := req.ValidateRequest(); err != nil {
+		handler.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	data := core.TransferFromCalldata(req.ToFrom(), req.ToTo(), req.ToAmount())
+	handler.WriteJSON(w, http.StatusOK, NewTransferFromCalldataResponse(data))
 }
